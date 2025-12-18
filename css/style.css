@@ -1,0 +1,9 @@
+main > article > img {
+    width: 400px;
+    height: auto;
+}
+
+aside > section > ul > li > img {
+    width: 100px;
+    height: auto;
+}
