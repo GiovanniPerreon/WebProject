@@ -1,9 +1,335 @@
-main > article > img {
-    width: 400px;
-    height: auto;
+body{
+    background-color: #1e2326;
 }
 
-aside > section > ul > li > img {
-    width: 100px;
-    height: auto;
+body, h1, ul{
+    margin: 0;
+    padding: 0;
+}
+
+body > header, body > footer{
+    background-color: #272e33; 
+    color: #d3c6aa;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px 0;
+}
+
+nav{
+    margin: 0 5%;
+}
+
+nav ul, aside ul{
+    list-style: none;
+}
+
+nav ul li{
+    display: inline-block;
+    width: 45%;
+    background-color: #272e33;
+    text-align: center;
+    margin-top: 10px;
+}
+
+nav ul li:nth-child(odd){
+    margin-right: 10%;
+}
+
+nav ul li a{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding: 5px 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #d3c6aa;
+    text-decoration: none;
+}
+
+nav ul li a:hover, main > article > a:hover, aside > section > ul > li > a:hover{
+    color: #a7c080;
+}
+
+form input[type="submit"]:hover{
+    background-color: #8da563;
+    color: #1e2326;
+}
+
+body > main{
+    margin: 0 5%;
+}
+
+main > h2{
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 24px;
+    color: #d3c6aa;
+}
+
+main > article, main > section, main > form{
+    background-color: #2d353b;
+    border: 1px solid #3d484d;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 0 5% 20px;
+    color: #d3c6aa;
+}
+
+/* HOME */
+
+main > article > img{
+    max-width: 100%;
+    max-height: 200px;
+}
+
+main > article > h3, main > article > p{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: left;
+}
+
+main > article > p{
+    font-size: 12px;
+}
+
+main > article > p:nth-of-type(2){
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+main > article > button{
+    background-color: #3d484d;
+    color: #d3c6aa;
+    border: 1px solid #4f585e;
+    border-radius: 5px;
+    padding: 8px 15px;
+    margin: 5px 3px;
+    cursor: pointer;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+main > article > button:hover{
+    background-color: #a7c080;
+    color: #1e2326;
+    border-color: #a7c080;
+}
+
+main > article > section{
+    background-color: #272e33;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 15px;
+    text-align: left;
+}
+
+main > article > section > h4{
+    color: #a7c080;
+    margin: 0 0 10px 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+main > article > section > article{
+    background-color: #1e2326;
+    border-left: 3px solid #a7c080;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 0 5px 5px 0;
+}
+
+main > article > section > article > p{
+    margin: 0;
+    font-size: 13px;
+    color: #d3c6aa;
+}
+
+main > article > section > form{
+    margin-top: 15px;
+}
+
+main > article > section > form fieldset{
+    border: 1px solid #4f585e;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #2d353b;
+}
+
+main > article > section > form legend{
+    color: #a7c080;
+    font-size: 13px;
+    padding: 0 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+main > article > section > form textarea{
+    width: 100%;
+    min-height: 60px;
+    background-color: #1e2326;
+    border: 1px solid #4f585e;
+    border-radius: 5px;
+    color: #d3c6aa;
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 13px;
+    resize: vertical;
+}
+
+main > article > section > form textarea::placeholder{
+    color: #859289;
+}
+
+main > article > section > form textarea:focus{
+    outline: none;
+    border-color: #a7c080;
+}
+
+main > article > section > form button[type="submit"]{
+    background-color: #a7c080;
+    color: #1e2326;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+main > article > section > form button[type="submit"]:hover{
+    background-color: #8da563;
+}
+
+main > article > a, form input[type="submit"]{
+    color: #1e2326;
+    text-decoration: none;
+    background-color: #a7c080;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* CONTATTI */
+
+main > section > table th{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+table{
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+table th, table td{
+    border: 1px solid #4f585e;
+    padding: 5px 0;
+}
+
+/* LOGIN */
+main > form{
+    padding-top: 20px;
+}
+
+form ul{
+    list-style: none;
+    width: 80%;
+    margin: 0 10%;
+}
+
+form ul li{
+    margin-bottom: 20px;
+}
+
+form ul li:last-child{
+    text-align: right;
+}
+
+form ul li label{
+    display: inline-block;
+    width: 50%;
+    text-align: left;
+    cursor: pointer;
+}
+
+form ul li input:not([type="submit"]){
+    width: 50%;
+    box-sizing: border-box;
+    background-color: #1e2326;
+    border: 1px solid #4f585e;
+    border-radius: 5px;
+    color: #d3c6aa;
+    padding: 8px 10px;
+}
+
+form ul li input:not([type="submit"]):focus{
+    outline: none;
+    border-color: #a7c080;
+}
+
+form ul li input[type="submit"]{
+    cursor: pointer;
+    border-width: 0;
+}
+
+aside{
+    background-color: #2d353b;
+    margin: 0 5% 20px;
+    border: 1px solid #3d484d;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: #d3c6aa;
+}
+
+
+aside > section{
+    padding: 0 5% 20px;
+}
+
+aside > section > h2{    
+    font-size: 18px;
+}
+
+aside > section > ul > li{
+    margin-bottom: 10px;
+}
+
+aside > section > ul > li > a{
+    text-decoration: none;
+    color: #a7c080;
+}
+
+
+
+@media screen and (min-width: 768px) {
+
+    nav{
+        margin: 0 10%;
+    }
+
+    nav ul li{
+        width: 19%;
+    }
+
+    nav ul li:not(:last-child){
+        margin-right: 8%;
+    }
+
+    main, aside{
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    body > main{
+        width: 50%;
+        margin: 0 0 0 10%;
+    }
+
+    aside{
+        width: 25%;
+        margin: 77px 5% 20px 5%;
+        box-sizing: border-box;
+    }
+    
 }
