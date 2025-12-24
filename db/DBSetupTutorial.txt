@@ -1,0 +1,6 @@
+with xxamp running:
+go to http://localhost/phpmyadmin/index.php?route=/server/sql
+copy paste creazione_db.sql & reload the page, spotted_db should appear
+go to http://localhost/phpmyadmin/index.php?route=/database/sql&db=spotted_db
+copy paste inserisci_dati.sql
+Done
