@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `spotted_db`.`post` (
   `datapost` DATE NOT NULL,
   `anteprimapost` TINYTEXT NOT NULL,
   `imgpost` VARCHAR(100) NOT NULL,
+  `likes` INT NOT NULL DEFAULT 0,
   `utente` INT NOT NULL,
   PRIMARY KEY (`idpost`),
   INDEX `fk_post_utente_idx` (`utente` ASC),
@@ -40,6 +41,76 @@ CREATE TABLE IF NOT EXISTS `spotted_db`.`post` (
     FOREIGN KEY (`utente`)
     REFERENCES `spotted_db`.`utente` (`idutente`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `spotted_db`.`tag`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotted_db`.`tag` (
+  `idtag` INT NOT NULL AUTO_INCREMENT,
+  `nometag` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`idtag`),
+  UNIQUE INDEX `nometag_UNIQUE` (`nometag` ASC)
+) ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `spotted_db`.`post_tag`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotted_db`.`post_tag` (
+  `post` INT NOT NULL,
+  `tag` INT NOT NULL,
+  PRIMARY KEY (`post`, `tag`),
+  INDEX `fk_post_tag_tag_idx` (`tag` ASC),
+  INDEX `fk_post_tag_post_idx` (`post` ASC),
+  CONSTRAINT `fk_post_tag_post`
+    FOREIGN KEY (`post`)
+    REFERENCES `spotted_db`.`post` (`idpost`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_post_tag_tag`
+    FOREIGN KEY (`tag`)
+    REFERENCES `spotted_db`.`tag` (`idtag`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `spotted_db`.`commento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotted_db`.`commento` (
+  `idcommento` INT NOT NULL AUTO_INCREMENT,
+  `testocommento` TEXT NOT NULL,
+  `datacommento` DATETIME NOT NULL,
+  `nomeautore` VARCHAR(100) NOT NULL,
+  `post` INT NOT NULL,
+  PRIMARY KEY (`idcommento`),
+  INDEX `fk_commento_post_idx` (`post` ASC),
+  CONSTRAINT `fk_commento_post`
+    FOREIGN KEY (`post`)
+    REFERENCES `spotted_db`.`post` (`idpost`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `spotted_db`.`user_likes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `spotted_db`.`user_likes` (
+  `utente` INT NOT NULL,
+  `post` INT NOT NULL,
+  PRIMARY KEY (`utente`, `post`),
+  INDEX `fk_user_likes_post_idx` (`post` ASC),
+  INDEX `fk_user_likes_utente_idx` (`utente` ASC),
+  CONSTRAINT `fk_user_likes_utente`
+    FOREIGN KEY (`utente`)
+    REFERENCES `spotted_db`.`utente` (`idutente`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_likes_post`
+    FOREIGN KEY (`post`)
+    REFERENCES `spotted_db`.`post` (`idpost`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 

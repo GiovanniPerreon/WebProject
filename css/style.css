@@ -98,6 +98,77 @@ main > article > button{
     background-color: #3d484d;
     color: #d3c6aa;
     border: 1px solid #4f585e;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+main > article > button:hover{
+    background-color: #4f585e;
+}
+
+/* Post Actions Buttons */
+.post-actions {
+    margin: 15px 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.like-btn, .segnala-btn, .condividi-btn {
+    background-color: #3d484d;
+    color: #d3c6aa;
+    border: 2px solid #4f585e;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.like-btn {
+    border-color: #a7c080;
+}
+
+.like-btn:hover {
+    background-color: #a7c080;
+    color: #1e2326;
+    transform: scale(1.05);
+}
+
+.like-btn.liked {
+    background-color: #a7c080;
+    color: #1e2326;
+    border-color: #8da563;
+}
+
+.segnala-btn {
+    border-color: #e67e80;
+}
+
+.segnala-btn:hover {
+    background-color: #e67e80;
+    color: #1e2326;
+    transform: scale(1.05);
+}
+
+.condividi-btn {
+    border-color: #7fbbb3;
+}
+
+.condividi-btn:hover {
+    background-color: #7fbbb3;
+    color: #1e2326;
+    transform: scale(1.05);
+}
+
     border-radius: 5px;
     padding: 8px 15px;
     margin: 5px 3px;
@@ -160,6 +231,24 @@ main > article > section > form legend{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+main > article > section > form input[type="text"]{
+    width: 100%;
+    background-color: #1e2326;
+    border: 1px solid #4f585e;
+    border-radius: 5px;
+    color: #d3c6aa;
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+main > article > section > form input[type="text"]:focus{
+    outline: none;
+    border-color: #a7c080;
+}
+
 main > article > section > form textarea{
     width: 100%;
     min-height: 60px;
@@ -201,13 +290,90 @@ main > article > section > form button[type="submit"]:hover{
     background-color: #8da563;
 }
 
-main > article > a, form input[type="submit"]{
+main > article > section > p.login-message{
+    text-align: center;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+main > article > section > p.login-message > a{
+    display: inline-block;
+    background-color: #a7c080;
+    color: #1e2326;
+    text-decoration: none;
+    border-radius: 5px;
+    padding: 8px 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+main > article > section > p.login-message > a:hover{
+    background-color: #8da563;
+}
+
+main > article > a, main > section > p > a, form input[type="submit"]{
     color: #1e2326;
     text-decoration: none;
     background-color: #a7c080;
     border-radius: 5px;
     padding: 5px 10px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    display: inline-block;
+    margin: 5px;
+}
+
+main > article > a:hover, main > section > p > a:hover{
+    background-color: #8da563;
+}
+
+/* GESTIONE POST */
+main > section > article.post-item{
+    background-color: #272e33;
+    border: 1px solid #4f585e;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+main > section > article.post-item > h3{
+    margin: 0 0 10px 0;
+    color: #a7c080;
+    font-size: 18px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+main > section > article.post-item > p{
+    margin: 0;
+    text-align: right;
+}
+
+main > section > article.post-item > p > a{
+    display: inline-block;
+    color: #1e2326;
+    text-decoration: none;
+    background-color: #a7c080;
+    border-radius: 5px;
+    padding: 5px 15px;
+    margin-left: 5px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+main > section > article.post-item > p > a:hover{
+    background-color: #8da563;
+}
+
+main > section > article.post-item > p > a.delete-btn{
+    background-color: #e67e80;
+}
+
+main > section > article.post-item > p > a.delete-btn:hover{
+    background-color: #c94f54;
 }
 
 /* CONTATTI */
@@ -231,6 +397,162 @@ table th, table td{
 /* LOGIN */
 main > form{
     padding-top: 20px;
+}
+
+main > form fieldset{
+    border: 2px solid #4f585e;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #272e33;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+main > form fieldset legend{
+    color: #a7c080;
+    font-weight: bold;
+    padding: 0 10px;
+    font-size: 16px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+main > form fieldset label{
+    display: block;
+    color: #d3c6aa;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+}
+
+main > form fieldset input[type="text"],
+main > form fieldset textarea{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #1e2326;
+    border: 1px solid #4f585e;
+    border-radius: 5px;
+    color: #d3c6aa;
+    padding: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+/* Custom File Input */
+.file-input-wrapper {
+    position: relative;
+    margin: 10px 0 15px 0;
+}
+
+.file-input-wrapper input[type="file"] {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+
+.file-input-label {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #a7c080;
+    color: #1e2326;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.file-input-label:hover {
+    background-color: #8da563;
+    transform: scale(1.02);
+}
+
+.file-icon {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.file-name {
+    display: block;
+    margin-top: 10px;
+    color: #859289;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.current-image {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #1e2326;
+    border-radius: 5px;
+    color: #d3c6aa;
+    font-size: 13px;
+}
+
+.image-preview {
+    display: block;
+    max-width: 200px;
+    max-height: 200px;
+    margin-top: 10px;
+    border: 2px solid #4f585e;
+    border-radius: 5px;
+}
+
+
+main > form fieldset textarea{
+    resize: vertical;
+    min-height: 60px;
+}
+
+main > form fieldset input:focus,
+main > form fieldset textarea:focus{
+    outline: none;
+    border-color: #a7c080;
+}
+
+main > form fieldset button[type="submit"]{
+    background-color: #a7c080;
+    color: #1e2326;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 30px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+main > form fieldset button[type="submit"]:hover{
+    background-color: #8da563;
+}
+
+main > form fieldset p.current-image{
+    color: #859289;
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 5px;
+}
+
+main > form fieldset .tag-checkbox{
+    display: inline-block;
+    margin: 5px 10px 5px 0;
+}
+
+main > form fieldset .tag-checkbox input[type="checkbox"]{
+    width: auto;
+    margin-right: 5px;
+}
+
+main > form fieldset .tag-checkbox label{
+    display: inline;
+    margin: 0;
+    font-weight: normal;
+    cursor: pointer;
 }
 
 form ul{
@@ -293,6 +615,14 @@ aside > section > h2{
 
 aside > section > ul > li{
     margin-bottom: 10px;
+}
+
+aside > section > ul > li > img{
+    max-width: 80px;
+    max-height: 80px;
+    display: block;
+    margin-bottom: 5px;
+    border-radius: 5px;
 }
 
 aside > section > ul > li > a{
