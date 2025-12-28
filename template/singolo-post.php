@@ -3,31 +3,69 @@
 <section>
     <p>Il post richiesto non esiste!</p>
 </section>
-<?php else: ?>
-<h2><?php echo $templateParams["post"][0]["titolopost"]; ?></h2>
-<article>
-    <?php if(!empty($templateParams["post"][0]["imgpost"])): ?>
-    <img src="<?php echo UPLOAD_DIR.$templateParams["post"][0]["imgpost"]; ?>" alt="<?php echo $templateParams["post"][0]["titolopost"]; ?>" />
+<?php else: 
+$post = $templateParams["post"][0];
+
+$showName = true;
+$displayName = $post["nome"];
+$linkToProfile = true;
+
+if(isset($post["anonimo"]) && $post["anonimo"]) {
+    if(isUserAdmin()) {
+        $displayName = $post["nome"];
+        $linkToProfile = true;
+    } else {
+        $displayName = "Anonimo";
+        $linkToProfile = false;
+    }
+}
+
+$adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <span class="admin-badge" title="Amministratore">👑</span>' : '';
+?>
+<h2>
+    <?php echo $post["titolopost"]; ?>
+    <?php if(isset($post["anonimo"]) && $post["anonimo"] && isUserAdmin()): ?>
+    <span class="admin-anonimo-badge" title="Post anonimo">🎭</span>
     <?php endif; ?>
-    <p><?php echo $templateParams["post"][0]["testopost"]; ?></p>
-    <p><?php echo $templateParams["post"][0]["datapost"]; ?> - <?php echo $templateParams["post"][0]["nome"]; ?></p>
-    <?php if(isUserLoggedIn()): 
-        $hasLiked = $dbh->hasUserLikedPost($_SESSION['idutente'], $templateParams["post"][0]["idpost"]);
-    ?>
+</h2>
+<article>
+    <?php if(!empty($post["imgpost"])): ?>
+    <img src="<?php echo UPLOAD_DIR.$post["imgpost"]; ?>" alt="<?php echo $post["titolopost"]; ?>" />
+    <?php endif; ?>
+    <p><?php echo $post["testopost"]; ?></p>
+    <p>
+        <?php echo $post["datapost"]; ?> - 
+        <?php if($linkToProfile && isset($post["idutente"])): ?>
+        <a href="profilo.php?id=<?php echo $post["idutente"]; ?>" class="author-link"><?php echo $displayName; ?></a><?php echo $adminBadge; ?>
+        <?php else: ?>
+        <?php echo $displayName; ?><?php echo $adminBadge; ?>
+        <?php endif; ?>
+    </p>
+    
     <div class="post-actions">
+        <?php if(isUserLoggedIn()): 
+            $hasLiked = $dbh->hasUserLikedPost($_SESSION['idutente'], $post["idpost"]);
+        ?>
         <form action="processa-like.php" method="POST" style="display:inline;">
-            <input type="hidden" name="idpost" value="<?php echo $templateParams["post"][0]["idpost"]; ?>" />
+            <input type="hidden" name="idpost" value="<?php echo $post["idpost"]; ?>" />
             <button type="submit" class="like-btn <?php echo $hasLiked ? 'liked' : ''; ?>">
-                <?php echo $hasLiked ? '❤️' : '🤍'; ?> Like (<?php echo $templateParams["post"][0]["likes"]; ?>)
+                <?php echo $hasLiked ? '❤️' : '🤍'; ?> Like (<?php echo $post["likes"]; ?>)
             </button>
         </form>
-        <button class="segnala-btn">⚠️ Segnala</button>
+        <button class="segnala-btn" data-idpost="<?php echo $post["idpost"]; ?>">⚠️ Segnala</button>
         <button class="condividi-btn">🔗 Condividi</button>
+        
+        <?php if(isUserAdmin()): ?>
+        <button class="admin-delete-btn" onclick="deletePost(<?php echo $post['idpost']; ?>)">🗑️ Elimina</button>
+        <?php endif; ?>
+        <?php else: ?>
+        <span class="like-display">❤️ <?php echo $post["likes"]; ?> Like</span>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
+    
     <p>
     <?php 
-    $tags = $dbh->getTagsByPostId($templateParams["post"][0]["idpost"]);
+    $tags = $dbh->getTagsByPostId($post["idpost"]);
     if(count($tags) > 0): 
         echo "[";
         foreach($tags as $i => $tag){
@@ -43,12 +81,30 @@
     <section>
         <h4>Commenti</h4>
         <?php 
-        $commenti = $dbh->getCommentsByPostId($templateParams["post"][0]["idpost"]);
+        $commenti = $dbh->getCommentsByPostId($post["idpost"]);
         if(count($commenti) > 0):
             foreach($commenti as $commento): 
+                // Determine commenter display name and link
+                $commenterName = $commento["nomeautore"];
+                $commenterId = $commento["idutente"];
+                $commenterIsAdmin = isset($commento["amministratore"]) && $commento["amministratore"];
+                $commenterBadge = $commenterIsAdmin ? ' <span class="admin-badge" title="Amministratore">👑</span>' : '';
         ?>
-        <article>
-            <p><?php echo $commento["nomeautore"]; ?>: <?php echo $commento["testocommento"]; ?> - <?php echo $commento["datacommento"]; ?></p>
+        <article class="comment">
+            <p>
+                <strong>
+                    <?php if($commenterId): ?>
+                    <a href="profilo.php?id=<?php echo $commenterId; ?>" class="author-link"><?php echo $commenterName; ?></a><?php echo $commenterBadge; ?>
+                    <?php else: ?>
+                    <?php echo $commenterName; ?>
+                    <?php endif; ?>
+                </strong>: 
+                <?php echo $commento["testocommento"]; ?> 
+                <small><?php echo $commento["datacommento"]; ?></small>
+                <?php if(isUserAdmin()): ?>
+                <button class="admin-delete-comment-btn" onclick="deleteComment(<?php echo $commento['idcommento']; ?>)">🗑️</button>
+                <?php endif; ?>
+            </p>
         </article>
         <?php 
             endforeach;
@@ -60,7 +116,7 @@
         <?php endif; ?>
         <?php if(isUserLoggedIn()): ?>
         <form action="processa-commento.php" method="POST">
-            <input type="hidden" name="idpost" value="<?php echo $templateParams["post"][0]["idpost"]; ?>" />
+            <input type="hidden" name="idpost" value="<?php echo $post["idpost"]; ?>" />
             <fieldset>
                 <legend>Lascia un commento</legend>
                 <textarea name="testocommento" required placeholder="Scrivi qui..."></textarea>
@@ -73,3 +129,41 @@
     </section>
 </article>
 <?php endif; ?>
+
+<script>
+function deletePost(idpost) {
+    if(confirm('Sei sicuro di voler eliminare questo post?')) {
+        fetch('api-admin.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'action=deletePost&id=' + idpost
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                window.location.href = 'index.php';
+            } else {
+                alert(data.error || 'Errore durante l\'eliminazione');
+            }
+        });
+    }
+}
+
+function deleteComment(idcommento) {
+    if(confirm('Sei sicuro di voler eliminare questo commento?')) {
+        fetch('api-admin.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'action=deleteComment&id=' + idcommento
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                location.reload();
+            } else {
+                alert(data.error || 'Errore durante l\'eliminazione');
+            }
+        });
+    }
+}
+</script>

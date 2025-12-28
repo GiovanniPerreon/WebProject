@@ -14,10 +14,9 @@ if(!isset($_POST["submit"]) || !isset($_POST["idpost"])){
 $idpost = $_POST["idpost"];
 $nomeautore = $_SESSION["nome"];
 $testocommento = $_POST["testocommento"];
+$idutente = $_SESSION["idutente"];
 
-// Insert comment
-$dbh->insertComment($testocommento, $nomeautore, $idpost);
+$dbh->insertComment($testocommento, $nomeautore, $idpost, $idutente);
 
-// Redirect back to the post
 header("location: post.php?id=".$idpost);
 ?>

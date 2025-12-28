@@ -26,6 +26,14 @@
                   <?php if($templateParams["azione"]==3){echo "readonly";} ?> required><?php echo isset($templateParams["post"]["testopost"]) ? $templateParams["post"]["testopost"] : ''; ?></textarea>
         
         <?php if($templateParams["azione"]!=3): ?>
+            <!-- Opzione Post Anonimo -->
+            <div class="anonimo-option">
+                <input type="checkbox" id="anonimo" name="anonimo" value="1" 
+                       <?php if(isset($templateParams["post"]["anonimo"]) && $templateParams["post"]["anonimo"]){echo "checked";} ?> />
+                <label for="anonimo">🎭 Pubblica come anonimo</label>
+                <p class="anonimo-hint">Il tuo nome non sarà visibile agli altri utenti (solo gli amministratori potranno vederlo)</p>
+            </div>
+            
             <label>Tag:</label>
             <?php 
             $allTags = $dbh->getTags();

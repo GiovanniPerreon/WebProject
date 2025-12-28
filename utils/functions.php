@@ -13,14 +13,20 @@ function isUserLoggedIn(){
     return !empty($_SESSION['idutente']);
 }
 
+function isUserAdmin(){
+    return !empty($_SESSION['amministratore']) && $_SESSION['amministratore'] == 1;
+}
+
 function registerLoggedUser($user){
     $_SESSION["idutente"] = $user["idutente"];
     $_SESSION["username"] = $user["username"];
     $_SESSION["nome"] = $user["nome"];
+    $_SESSION["amministratore"] = isset($user["amministratore"]) ? $user["amministratore"] : 0;
+    $_SESSION["imgprofilo"] = isset($user["imgprofilo"]) ? $user["imgprofilo"] : "default-avatar.png";
 }
 
 function getEmptyPost(){
-    return array("idpost" => "", "titolopost" => "", "imgpost" => "", "testopost" => "", "anteprimapost" => "");
+    return array("idpost" => "", "titolopost" => "", "imgpost" => "", "testopost" => "", "anteprimapost" => "", "anonimo" => 0);
 }
 
 function getAction($action){
@@ -89,5 +95,25 @@ function uploadImage($path, $image){
     }
     
     return array("result"=>$result, "msg"=>$msg, "name"=>$imageName);
+}
+
+function getStatoSegnalazioneLabel($stato){
+    switch($stato){
+        case 'pending': return 'In attesa';
+        case 'reviewed': return 'In revisione';
+        case 'resolved': return 'Risolto';
+        case 'dismissed': return 'Respinto';
+        default: return $stato;
+    }
+}
+
+function getStatoSegnalazioneClass($stato){
+    switch($stato){
+        case 'pending': return 'stato-pending';
+        case 'reviewed': return 'stato-reviewed';
+        case 'resolved': return 'stato-resolved';
+        case 'dismissed': return 'stato-dismissed';
+        default: return '';
+    }
 }
 ?>

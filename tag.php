@@ -14,10 +14,8 @@ if(isset($_GET["id"])){
     }
 }
 
-//Base Template
 $templateParams["titolo"] = "Spotted Unibo Cesena - " . $nometag;
 $templateParams["nome"] = "lista-posts.php";
-//Tag Template
 $templateParams["posts"] = $dbh->getPostsByTag($idtag);
 
 require 'template/base.php';

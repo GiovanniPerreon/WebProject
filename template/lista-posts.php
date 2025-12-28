@@ -1,71 +1,59 @@
 <h2>Ultimi Post</h2>
 <?php foreach($templateParams["posts"] as $post): ?>
-<article>
-    <h3><?php echo $post["titolopost"]; ?></h3>
+<article class="post-preview">
+    <h3>
+        <a href="post.php?id=<?php echo $post["idpost"]; ?>" class="post-title-link">
+            <?php echo $post["titolopost"]; ?>
+        </a>
+        <?php if(isset($post["anonimo"]) && $post["anonimo"] && isUserAdmin()): ?>
+        <span class="admin-anonimo-badge" title="Post anonimo - Solo admin può vedere l'autore">🎭</span>
+        <?php endif; ?>
+    </h3>
+    
     <?php if(!empty($post["imgpost"])): ?>
-    <img src="<?php echo UPLOAD_DIR.$post["imgpost"]; ?>" alt="<?php echo $post["titolopost"]; ?>" />
+    <a href="post.php?id=<?php echo $post["idpost"]; ?>">
+        <img src="<?php echo UPLOAD_DIR.$post["imgpost"]; ?>" alt="<?php echo $post["titolopost"]; ?>" />
+    </a>
     <?php endif; ?>
-    <p><?php echo $post["anteprimapost"]; ?></p>
-    <p><?php echo $post["datapost"]; ?> - <?php echo $post["nome"]; ?></p>
-    <?php if(isUserLoggedIn()): 
-        $hasLiked = $dbh->hasUserLikedPost($_SESSION['idutente'], $post["idpost"]);
-    ?>
-    <div class="post-actions">
-        <form action="processa-like.php" method="POST" style="display:inline;">
-            <input type="hidden" name="idpost" value="<?php echo $post["idpost"]; ?>" />
-            <button type="submit" class="like-btn <?php echo $hasLiked ? 'liked' : ''; ?>">
-                <?php echo $hasLiked ? '❤️' : '🤍'; ?> Like (<?php echo $post["likes"]; ?>)
-            </button>
-        </form>
-        <button class="segnala-btn">⚠️ Segnala</button>
-        <button class="condividi-btn">🔗 Condividi</button>
-    </div>
-    <?php endif; ?>
-    <p>
+    
+    <p class="post-meta">
+        <?php echo $post["datapost"]; ?> - 
+        <?php 
+        $displayName = $post["nome"];
+        $linkToProfile = true;
+        
+        if(isset($post["anonimo"]) && $post["anonimo"]) {
+            if(isUserAdmin()) {
+                $displayName = $post["nome"];
+                $linkToProfile = true;
+            } else {
+                $displayName = "Anonimo";
+                $linkToProfile = false;
+            }
+        }
+
+        $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <span class="admin-badge" title="Amministratore">👑</span>' : '';
+        
+        if($linkToProfile && isset($post["idutente"])):
+        ?>
+        <a href="profilo.php?id=<?php echo $post["idutente"]; ?>" class="author-link"><?php echo $displayName; ?></a><?php echo $adminBadge; ?>
+        <?php else: ?>
+        <?php echo $displayName; ?><?php echo $adminBadge; ?>
+        <?php endif; ?>
+    </p>
+    
+    <p class="post-tags">
     <?php 
     $tags = $dbh->getTagsByPostId($post["idpost"]);
     if(count($tags) > 0): 
-        echo "[";
-        foreach($tags as $i => $tag){
-            if($i > 0) echo ", ";
-            echo $tag["nometag"];
-        }
-        echo "]";
-    else:
-        echo "[Nessun Tag]";
+        foreach($tags as $i => $tag):
+            if($i > 0) echo " ";
+    ?>
+        <a href="tag.php?id=<?php echo $tag["idtag"]; ?>" class="tag-link"><?php echo $tag["nometag"]; ?></a>
+    <?php 
+        endforeach;
     endif;
     ?>
     </p>
-    <section>
-        <h4>Commenti</h4>
-        <?php 
-        $commenti = $dbh->getCommentsByPostId($post["idpost"]);
-        if(count($commenti) > 0):
-            foreach($commenti as $commento): 
-        ?>
-        <article>
-            <p><?php echo $commento["nomeautore"]; ?>: <?php echo $commento["testocommento"]; ?> - <?php echo $commento["datacommento"]; ?></p>
-        </article>
-        <?php 
-            endforeach;
-        else: 
-        ?>
-        <article>
-            <p>Nessun commento</p>
-        </article>
-        <?php endif; ?>
-        <?php if(isUserLoggedIn()): ?>
-        <form action="processa-commento.php" method="POST">
-            <input type="hidden" name="idpost" value="<?php echo $post["idpost"]; ?>" />
-            <fieldset>
-                <legend>Lascia un commento</legend>
-                <textarea name="testocommento" required placeholder="Scrivi qui..."></textarea>
-                <button type="submit" name="submit">Invia</button>
-            </fieldset>
-        </form>
-        <?php else: ?>
-        <p class="login-message"><a href="login.php">Accedi</a> per interagire con questo post</p>
-        <?php endif; ?>
-    </section>
 </article>
 <?php endforeach; ?>
