@@ -53,7 +53,7 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
             </button>
         </form>
         <button class="segnala-btn" data-idpost="<?php echo $post["idpost"]; ?>">⚠️ Segnala</button>
-        <button class="condividi-btn">🔗 Condividi</button>
+        <button class="condividi-btn" data-post-id="<?php echo $post["idpost"]; ?>">🔗 Condividi</button>
         
         <?php if(isUserAdmin()): ?>
         <button class="admin-delete-btn" onclick="deletePost(<?php echo $post['idpost']; ?>)">🗑️ Elimina</button>

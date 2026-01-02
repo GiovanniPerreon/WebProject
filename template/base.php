@@ -136,5 +136,9 @@
         }
     });
     </script>
+
+    <!-- Toast Notifications & Post Actions -->
+    <script src="js/notifications.js"></script>
+    <script src="js/post-actions.js"></script>
 </body>
 </html>
