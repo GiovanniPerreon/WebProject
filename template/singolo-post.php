@@ -46,7 +46,7 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
         <?php if(isUserLoggedIn()): 
             $hasLiked = $dbh->hasUserLikedPost($_SESSION['idutente'], $post["idpost"]);
         ?>
-        <form action="processa-like.php" method="POST" style="display:inline;">
+        <form action="processa-like.php" method="POST" style="display:contents;">
             <input type="hidden" name="idpost" value="<?php echo $post["idpost"]; ?>" />
             <button type="submit" class="like-btn <?php echo $hasLiked ? 'liked' : ''; ?>">
                 <?php echo $hasLiked ? '❤️' : '🤍'; ?> Like (<?php echo $post["likes"]; ?>)

@@ -15,7 +15,7 @@ switch($azione){
         $uploadResult = uploadImage(UPLOAD_DIR, $_FILES["imgpost"]);
         if($uploadResult["result"] == 1){
             $imgName = $uploadResult["name"];
-            $newPostId = $dbh->insertPostAnonymous(
+            $newPostId = $dbh->insertPost(
                 $_POST["titolopost"],
                 $_POST["testopost"],
                 $_POST["anteprimapost"],
@@ -66,10 +66,9 @@ switch($azione){
             $_POST["testopost"],
             $_POST["anteprimapost"],
             $imgName,
-            $_SESSION["idutente"]
+            $_SESSION["idutente"],
+            $anonimo
         );
-
-        $dbh->updatePostAnonymous($idpost, $anonimo, $_SESSION["idutente"]);
 
         $dbh->removeAllTagsFromPost($idpost);
         if(isset($_POST["tags"]) && is_array($_POST["tags"])){

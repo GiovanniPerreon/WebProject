@@ -29,9 +29,9 @@ button:not(.modal-close):not(.admin-delete-btn):not(.admin-delete-comment-btn):h
     box-shadow: var(--shadow-sm);
 }
 
-/* Hide like button (removed from UI) */
+/* Like button - remove top margin */
 .like-btn {
-    display: none !important;
+    margin-top: 0 !important;
 }
 
 /* Button Variants */
@@ -42,8 +42,9 @@ button:not(.modal-close):not(.admin-delete-btn):not(.admin-delete-comment-btn):h
 }
 
 .btn-primary:hover {
-    background-color: var(--accent-green-hover);
-    border-color: var(--accent-green-hover);
+    background-color: var(--bg-primary);
+    color: var(--accent-green);
+    border-color: var(--accent-green);
 }
 
 .btn-secondary {
@@ -258,9 +259,9 @@ main > article > img {
 }
 
 /* ==================== FORMS ==================== */
-main > form,
+main > form:not(.avatar-form),
 main > section,
-form {
+form:not(.avatar-form) {
     background-color: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
@@ -638,6 +639,23 @@ main > article > section > form button[type="submit"]:hover {
     border-radius: var(--radius-md);
     color: var(--text-primary);
     font-size: var(--text-sm);
+}
+
+.modal-content select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--accent-green) 50%),
+                      linear-gradient(135deg, var(--accent-green) 50%, transparent 50%);
+    background-position: calc(100% - 16px) calc(50% - 3px),
+                         calc(100% - 13px) calc(50% - 3px);
+    background-size: 3px 3px, 3px 3px;
+    background-repeat: no-repeat;
+    padding-right: 35px;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.modal-content select:hover {
+    border-color: var(--accent-green);
 }
 
 .modal-content select:focus,

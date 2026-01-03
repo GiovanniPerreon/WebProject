@@ -163,30 +163,51 @@
 }
 
 .btn-view {
-    background-color: var(--accent-blue);
+    background-color: #5a9fc9;
     color: var(--bg-primary);
+    border: 2px solid #5a9fc9;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    will-change: transform;
 }
 
 .btn-view:hover {
-    background-color: var(--accent-blue-hover);
+    background-color: #4a8bb5;
+    border-color: #4a8bb5;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
 }
 
 .btn-edit {
     background-color: var(--accent-yellow);
     color: var(--bg-primary);
+    border: 2px solid var(--accent-yellow);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    will-change: transform;
 }
 
 .btn-edit:hover {
     background-color: #c9a85f;
+    border-color: #c9a85f;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
 }
 
 .btn-delete {
     background-color: var(--accent-red);
     color: var(--bg-primary);
+    border: 2px solid var(--accent-red);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    will-change: transform;
 }
 
 .btn-delete:hover {
     background-color: var(--accent-red-hover);
+    border-color: var(--accent-red-hover);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
 }
 
 /* ==================== ADMIN PANEL ==================== */
@@ -430,12 +451,32 @@
 }
 
 .stato-select {
-    padding: var(--space-sm) var(--space-md);
+    appearance: none;
+    padding: var(--space-md);
+    padding-right: 35px;
     background-color: var(--bg-primary);
+    background-image: linear-gradient(45deg, transparent 50%, var(--accent-green) 50%),
+                      linear-gradient(135deg, var(--accent-green) 50%, transparent 50%);
+    background-position: calc(100% - 16px) calc(50% - 3px),
+                         calc(100% - 13px) calc(50% - 3px);
+    background-size: 3px 3px, 3px 3px;
+    background-repeat: no-repeat;
     color: var(--text-primary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     font-size: var(--text-sm);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.stato-select:hover {
+    border-color: var(--accent-green);
+}
+
+.stato-select:focus {
+    outline: none;
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 3px rgba(167, 192, 128, 0.1);
 }
 
 .btn-admin-action {

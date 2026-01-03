@@ -50,7 +50,7 @@
         <a href="gestisci-posts.php?azione=1" class="btn btn-primary">➕ Nuovo Post</a>
         <a href="logout.php" class="btn btn-secondary">🚪 Logout</a>
         <?php if(isUserAdmin()): ?>
-        <a href="admin.php" class="btn btn-admin">⚙️ Admin Panel</a>
+        <a href="admin.php" class="btn btn-admin">⚙️ Pannello Amministratore</a>
         <?php endif; ?>
     </div>
     <?php endif; ?>
