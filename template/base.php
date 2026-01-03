@@ -2,7 +2,11 @@
 <html lang="it">
 <head>
     <title><?php echo $templateParams["titolo"]; ?></title>
-    <link rel="stylesheet" href="./css/style.css" />
+    <!-- Modular CSS - Load in order: base → layout → components → pages -->
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+    <link rel="stylesheet" href="./css/pages.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<?php
     if(isset($templateParams["js"])):

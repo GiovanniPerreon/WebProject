@@ -1,0 +1,156 @@
+/* ==================== LAYOUT - HEADER & FOOTER ==================== */
+body > header,
+body > footer {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    text-align: center;
+    padding: var(--space-lg) var(--space-md);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+body > header h1 {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--accent-green);
+}
+
+body > footer {
+    border-bottom: none;
+    border-top: 1px solid var(--border-subtle);
+    margin-top: var(--space-2xl);
+    padding: var(--space-md);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+}
+
+/* ==================== NAVIGATION ==================== */
+nav {
+    background-color: var(--bg-secondary);
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav ul {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+nav ul li {
+    flex: 1 1 auto;
+    min-width: 120px;
+    text-align: center;
+}
+
+nav ul li a {
+    display: block;
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    transition: all var(--transition-base);
+}
+
+nav ul li a:hover {
+    background-color: var(--accent-green);
+    color: var(--bg-primary);
+    transform: translateY(-2px);
+}
+
+/* ==================== MAIN LAYOUT ==================== */
+body > main {
+    max-width: 800px;
+    margin: var(--space-xl) auto;
+    padding: 0 var(--space-md);
+}
+
+main > h2 {
+    font-size: var(--text-2xl);
+    color: var(--text-heading);
+    margin-bottom: var(--space-lg);
+    text-align: center;
+    font-weight: 700;
+}
+
+/* ==================== SIDEBAR ==================== */
+aside {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin: 0 var(--space-md) var(--space-xl);
+    padding: var(--space-lg);
+}
+
+aside > section {
+    padding: 0;
+}
+
+aside > section > h2 {
+    font-size: var(--text-lg);
+    color: var(--text-heading);
+    margin-bottom: var(--space-md);
+    font-weight: 700;
+}
+
+aside > section > ul > li {
+    margin-bottom: var(--space-sm);
+}
+
+aside > section > ul > li > a {
+    color: var(--accent-green);
+    font-weight: 600;
+    display: block;
+    padding: var(--space-xs) 0;
+    transition: all var(--transition-base);
+}
+
+aside > section > ul > li > a:hover {
+    color: var(--accent-green-hover);
+    padding-left: var(--space-sm);
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media screen and (min-width: 768px) {
+    /* Desktop layout with sidebar */
+    main, aside {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    body > main {
+        width: 60%;
+        margin-left: 5%;
+        margin-right: 2%;
+    }
+
+    aside {
+        width: 25%;
+        margin: var(--space-2xl) 5% var(--space-xl) 0;
+        position: sticky;
+        top: 80px;
+    }
+
+    nav ul {
+        justify-content: flex-start;
+    }
+
+    nav ul li {
+        flex: 0 1 auto;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    /* Mobile adjustments */
+    body > main {
+        padding: 0 var(--space-sm);
+    }
+}
