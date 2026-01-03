@@ -17,3 +17,7 @@
         </li>
     </ul>
 </form>
+
+<p class="form-footer">
+    Non hai un account? <a href="registrati.php">Registrati qui</a>
+</p>

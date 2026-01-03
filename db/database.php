@@ -128,6 +128,25 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    // Check if username exists
+    public function usernameExists($username){
+        $query = "SELECT COUNT(*) as count FROM utente WHERE username = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'] > 0;
+    }
+
+    // Register new user
+    public function registerUser($username, $password, $nome){
+        $query = "INSERT INTO utente (username, password, nome, attivo, amministratore, imgprofilo) VALUES (?, ?, ?, 1, 0, 'default-avatar.png')";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('sss', $username, $password, $nome);
+        return $stmt->execute();
+    }
+
     // Update user profile image
     public function updateUserProfileImage($idutente, $imgprofilo){
         $query = "UPDATE utente SET imgprofilo = ? WHERE idutente = ?";

@@ -353,6 +353,42 @@ form input[type="submit"]:hover {
     transform: translateY(-2px);
 }
 
+/* Form Messages */
+.error-message,
+.success-message {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-lg);
+}
+
+.error-message {
+    background-color: rgba(230, 126, 128, 0.15);
+    border: 2px solid var(--accent-red);
+    color: var(--accent-red);
+}
+
+.success-message {
+    background-color: rgba(167, 192, 128, 0.15);
+    border: 2px solid var(--accent-green);
+    color: var(--accent-green);
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: var(--space-lg);
+    color: var(--text-muted);
+}
+
+.form-footer a {
+    color: var(--accent-green);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
 /* Custom File Input */
 .file-input-wrapper {
     position: relative;
