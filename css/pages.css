@@ -889,6 +889,8 @@ table th {
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
+    /* Cap visual height so long messages cause scrollbar instead of expanding chat */
+    max-height: 60vh;
 }
 
 /* Scrollbar personalizzata */
@@ -913,6 +915,8 @@ table th {
 .message {
     display: flex;
     margin-bottom: var(--space-sm);
+    /* Prevent individual message flex item from forcing parent growth */
+    flex-shrink: 1;
 }
 
 .message.sent {
@@ -928,6 +932,11 @@ table th {
     padding: var(--space-sm) var(--space-md);
     border-radius: var(--radius-md);
     position: relative;
+    /* Ensure long words or unbroken text wrap and do not break layout */
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+    flex-shrink: 1;
 }
 
 .message.sent .message-content {
