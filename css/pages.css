@@ -65,7 +65,7 @@
 
 .profilo-info .username {
     margin: 0;
-    color: var(--text-muted);
+    color: var(--text-primary);
     font-size: var(--text-sm);
 }
 
@@ -1001,7 +1001,7 @@ table th {
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: var(--text-muted);
+    color: var(--text-primary);
 }
 
 .empty-message {
