@@ -72,8 +72,14 @@
                         <?php if($segnalazione["post"]): ?>
                         <p class="segnalazione-ref">📝 Post: <a href="post.php?id=<?php echo $segnalazione["post"]; ?>"><?php echo $segnalazione["titolopost"]; ?></a></p>
                         <?php endif; ?>
-                        <?php if($segnalazione["commento"]): ?>
-                        <p class="segnalazione-ref">💬 Commento: "<?php echo substr($segnalazione["testocommento"], 0, 100); ?>..."</p>
+                        <?php if($segnalazione["commento"]):
+                            $commentPostId = $segnalazione["post"] ? $segnalazione["post"] : (isset($segnalazione["comment_post"]) ? $segnalazione["comment_post"] : null);
+                        ?>
+                        <p class="segnalazione-ref">💬 Commento: "<?php echo substr($segnalazione["testocommento"], 0, 100); ?>..." 
+                        <?php if($commentPostId): ?>
+                            <a href="post.php?id=<?php echo $commentPostId; ?>#comment-<?php echo $segnalazione["commento"]; ?>">(Vai al commento)</a>
+                        <?php endif; ?>
+                        </p>
                         <?php endif; ?>
                     </div>
                     <div class="segnalazione-actions">

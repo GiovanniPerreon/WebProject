@@ -55,6 +55,13 @@ switch($action){
         $result = $dbh->deleteTag($idtag);
         echo json_encode(["success" => $result, "message" => $result ? "Tag eliminato" : "Errore nell'eliminazione"]);
         break;
+
+    case 'pin_post':
+        $idpost = intval(isset($_POST['idpost']) ? $_POST['idpost'] : 0);
+        $pinned = intval(isset($_POST['pinned']) ? $_POST['pinned'] : 0);
+        $result = $dbh->setPostPinned($idpost, $pinned);
+        echo json_encode(["success" => $result, "message" => $result ? ($pinned ? "Post pinnato" : "Post unpinnato") : "Errore durante l'operazione"]);
+        break;
         
     case "update_segnalazione":
         $idsegnalazione = intval($_POST["idsegnalazione"]);

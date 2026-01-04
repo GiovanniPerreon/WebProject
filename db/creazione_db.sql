@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `spotted_db`.`post` (
   `datapost` DATE NOT NULL,
   `anteprimapost` TINYTEXT NOT NULL,
   `imgpost` VARCHAR(100) NOT NULL,
+  `pinned` TINYINT NOT NULL DEFAULT 0,
   `likes` INT NOT NULL DEFAULT 0,
   `anonimo` TINYINT NOT NULL DEFAULT 0,
   `utente` INT NOT NULL,

@@ -5,6 +5,9 @@
         <a href="post.php?id=<?php echo $post["idpost"]; ?>" class="post-title-link">
             <?php echo $post["titolopost"]; ?>
         </a>
+        <?php if(isset($post['pinned']) && $post['pinned']): ?>
+        <span class="pinned-badge" title="Post pinnato">📌</span>
+        <?php endif; ?>
         <?php if(isset($post["anonimo"]) && $post["anonimo"] && isUserAdmin()): ?>
         <span class="admin-anonimo-badge" title="Post anonimo - Solo admin può vedere l'autore">🎭</span>
         <?php endif; ?>

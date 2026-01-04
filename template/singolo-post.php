@@ -53,6 +53,11 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
             </button>
         </form>
         <button class="segnala-btn" data-idpost="<?php echo $post["idpost"]; ?>">⚠️ Segnala</button>
+        <?php if(isUserAdmin()): ?>
+        <button class="btn-pin-post" data-id="<?php echo $post["idpost"]; ?>" data-pinned="<?php echo isset($post['pinned']) && $post['pinned'] ? 1 : 0; ?>">
+            <?php echo (isset($post['pinned']) && $post['pinned']) ? '📌 Unpin' : '📌 Pin'; ?>
+        </button>
+        <?php endif; ?>
         <button class="condividi-btn" data-post-id="<?php echo $post["idpost"]; ?>">🔗 Condividi</button>
         
         <?php if(isUserAdmin()): ?>
@@ -90,7 +95,7 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
                 $commenterIsAdmin = isset($commento["amministratore"]) && $commento["amministratore"];
                 $commenterBadge = $commenterIsAdmin ? ' <span class="admin-badge" title="Amministratore">👑</span>' : '';
         ?>
-        <article class="comment">
+        <article class="comment" id="comment-<?php echo $commento['idcommento']; ?>">
             <p>
                 <strong>
                     <?php if($commenterId): ?>
@@ -101,6 +106,9 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
                 </strong>: 
                 <?php echo $commento["testocommento"]; ?> 
                 <small><?php echo $commento["datacommento"]; ?></small>
+                <?php if(isUserLoggedIn()): ?>
+                <button class="segnala-btn icon-only" title="Segnala commento" aria-label="Segnala commento" data-idcommento="<?php echo $commento['idcommento']; ?>" data-idpost="<?php echo $post['idpost']; ?>">⚠️</button>
+                <?php endif; ?>
                 <?php if(isUserAdmin()): ?>
                 <button class="admin-delete-comment-btn" onclick="deleteComment(<?php echo $commento['idcommento']; ?>)">🗑️</button>
                 <?php endif; ?>
@@ -166,4 +174,33 @@ function deleteComment(idcommento) {
         });
     }
 }
+</script>
+<script>
+function togglePinPost(idpost, pinned) {
+    const newPinned = pinned ? 0 : 1;
+    if(!confirm(newPinned ? 'Vuoi pinnare questo post?' : 'Vuoi rimuovere il pin da questo post?')) return;
+    fetch('api-admin.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'action=pin_post&idpost=' + idpost + '&pinned=' + newPinned
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message || (data.success ? 'Operazione completata' : 'Errore'));
+        if(data.success) location.reload();
+    })
+    .catch(err => alert('Errore nella richiesta'));
+}
+
+// Attach click handler to pin button if present (fallback when admin.js not loaded)
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.querySelector('.btn-pin-post');
+    if(btn){
+        btn.addEventListener('click', function(){
+            const id = this.getAttribute('data-id');
+            const pinned = this.getAttribute('data-pinned') === '1' ? 1 : 0;
+            togglePinPost(id, pinned);
+        });
+    }
+});
 </script>

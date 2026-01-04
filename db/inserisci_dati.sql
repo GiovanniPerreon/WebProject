@@ -31,100 +31,101 @@ INSERT INTO tag (nometag) VALUES
 ('Domande');
 
 -- ==================== POST ====================
-INSERT INTO post (titolopost, testopost, datapost, anteprimapost, imgpost, likes, anonimo, utente) VALUES
+-- ==================== POST ====================
+INSERT INTO post (titolopost, testopost, datapost, anteprimapost, imgpost, pinned, likes, anonimo, utente) VALUES
 ('Cercasi coinquilino zona campus', 
 'Ciao a tutti! Cerco un coinquilino per un appartamento in zona campus, a 5 minuti a piedi dalla facoltà di Ingegneria. Stanza singola, 280€ al mese spese incluse. L''appartamento è già arredato e ha una bella cucina. Disponibile da febbraio. Contattatemi in privato!', 
-'2025-12-15', 'Cerco un coinquilino per un appartamento in zona campus, a 5 minuti a piedi...', '', 12, 0, 3),
+'2025-12-15', 'Cerco un coinquilino per un appartamento in zona campus, a 5 minuti a piedi...', '', 0, 12, 0, 3),
 
 ('Vendo libri Analisi 1 e Fisica', 
 'Vendo i seguenti libri in ottime condizioni: - Analisi Matematica 1 (Bramanti-Pagani-Salsa) 25€ - Fisica 1 (Mazzoldi) 20€ - Elementi di Algebra Lineare 15€. Prezzo trattabile se presi insieme. Posso consegnare in facoltà.', 
-'2025-12-16', 'Vendo i seguenti libri in ottime condizioni: Analisi Matematica 1...', '', 8, 0, 4),
+'2025-12-16', 'Vendo i seguenti libri in ottime condizioni: Analisi Matematica 1...', '', 0, 8, 0, 4),
 
 ('Qualcuno ha trovato un portafoglio?', 
 'Ieri sera ho perso il portafoglio nella zona della biblioteca centrale, probabilmente tra le 18 e le 19. È di pelle marrone con le mie tessere universitarie dentro. Se qualcuno lo ha trovato mi contatti per favore, offro ricompensa!', 
-'2025-12-17', 'Ieri sera ho perso il portafoglio nella zona della biblioteca centrale...', '', 15, 0, 5),
+'2025-12-17', 'Ieri sera ho perso il portafoglio nella zona della biblioteca centrale...', '', 0, 15, 0, 5),
 
 ('Gruppo studio per esame di Basi di Dati', 
 'Ciao! Sto cercando persone per formare un gruppo studio per l''esame di Basi di Dati del Prof. Rossi. L''idea è di trovarci 2-3 volte a settimana in biblioteca per fare esercizi insieme. Chi è interessato?', 
-'2025-12-17', 'Sto cercando persone per formare un gruppo studio per l''esame di Basi di Dati...', '', 22, 0, 6),
+'2025-12-17', 'Sto cercando persone per formare un gruppo studio per l''esame di Basi di Dati...', '', 0, 22, 0, 6),
 
 ('Festa di fine semestre - 20 Dicembre!', 
 '🎉 FESTA DI FINE SEMESTRE 🎉 Venerdì 20 Dicembre al Circolo Universitario! Ingresso 5€ con consumazione inclusa. DJ set, karaoke e tanti premi! Non mancate! Info e prevendite in DM.', 
-'2025-12-18', '🎉 FESTA DI FINE SEMESTRE! Venerdì 20 Dicembre al Circolo Universitario...', '', 45, 0, 2),
+'2025-12-18', '🎉 FESTA DI FINE SEMESTRE! Venerdì 20 Dicembre al Circolo Universitario...', '', 0, 45, 0, 2),
 
 ('Offro ripetizioni di Programmazione', 
 'Sono uno studente magistrale e offro ripetizioni di Programmazione (C, Java, Python) a studenti del primo e secondo anno. 15€/ora, possibilità di lezioni online o in presenza. Ho già esperienza come tutor.', 
-'2025-12-18', 'Offro ripetizioni di Programmazione (C, Java, Python) a studenti del primo...', '', 18, 0, 7),
+'2025-12-18', 'Offro ripetizioni di Programmazione (C, Java, Python) a studenti del primo...', '', 0, 18, 0, 7),
 
 ('Confessione anonima', 
 'Mi sono innamorato/a di una persona che vedo sempre in biblioteca al terzo piano. Capelli ricci, occhiali e sempre con un thermos blu. Se ti riconosci, sappi che il tuo sorriso mi illumina le giornate di studio!', 
-'2025-12-19', 'Mi sono innamorato/a di una persona che vedo sempre in biblioteca...', '', 67, 1, 8),
+'2025-12-19', 'Mi sono innamorato/a di una persona che vedo sempre in biblioteca...', '', 0, 67, 1, 8),
 
 ('Cercasi passaggio per Bologna lunedì', 
 'Qualcuno va a Bologna lunedì mattina? Devo essere in stazione centrale per le 9. Offro benzina e buona compagnia! Partenza da Cesena.', 
-'2025-12-19', 'Qualcuno va a Bologna lunedì mattina? Devo essere in stazione centrale...', '', 5, 0, 9),
+'2025-12-19', 'Qualcuno va a Bologna lunedì mattina? Devo essere in stazione centrale...', '', 0, 5, 0, 9),
 
 ('Palestra universitaria - cerco compagno', 
 'Ciao! Cerco qualcuno con cui andare in palestra al CUS. Vado di solito il martedì e giovedì pomeriggio. Livello intermedio, faccio principalmente pesi. Scrivetemi!', 
-'2025-12-19', 'Cerco qualcuno con cui andare in palestra al CUS. Vado di solito il martedì...', '', 9, 0, 10),
+'2025-12-19', 'Cerco qualcuno con cui andare in palestra al CUS. Vado di solito il martedì...', '', 0, 9, 0, 10),
 
 ('ATTENZIONE: Truffa affitti!', 
 '⚠️ Volevo avvisare tutti di stare attenti a un annuncio per un appartamento in Via Romagna. Ho quasi versato una caparra ma poi ho scoperto che l''appartamento non esiste! Non versate soldi senza aver visto l''immobile di persona!', 
-'2025-12-20', '⚠️ Volevo avvisare tutti di stare attenti a un annuncio per un appartamento...', '', 89, 0, 3),
+'2025-12-20', '⚠️ Volevo avvisare tutti di stare attenti a un annuncio per un appartamento...', '', 0, 89, 0, 3),
 
 ('Appunti Economia Aziendale', 
 'Ho tutti gli appunti del corso di Economia Aziendale del Prof. Bianchi, ben organizzati e con schemi riassuntivi. Li condivido gratis, scrivetemi in privato e vi mando il link al drive!', 
-'2025-12-20', 'Ho tutti gli appunti del corso di Economia Aziendale del Prof. Bianchi...', '', 34, 0, 4),
+'2025-12-20', 'Ho tutti gli appunti del corso di Economia Aziendale del Prof. Bianchi...', '', 0, 34, 0, 4),
 
 ('Quando tolgono le macchine del caffè???', 
 'Ma è possibile che la macchinetta del caffè al piano terra di Ingegneria sia SEMPRE rotta? Ormai è un mese che non funziona. Qualcuno sa se la sistemeranno mai?', 
-'2025-12-21', 'Ma è possibile che la macchinetta del caffè al piano terra di Ingegneria...', '', 56, 0, 5),
+'2025-12-21', 'Ma è possibile che la macchinetta del caffè al piano terra di Ingegneria...', '', 0, 56, 0, 5),
 
 ('Tirocinio azienda software Cesena', 
 'La mia azienda cerca tirocinanti per sviluppo web (React + Node.js). 600€/mese di rimborso, possibilità di assunzione. Mandate CV a hr@techazienda.it citando questo post!', 
-'2025-12-21', 'La mia azienda cerca tirocinanti per sviluppo web (React + Node.js)...', '', 41, 0, 7),
+'2025-12-21', 'La mia azienda cerca tirocinanti per sviluppo web (React + Node.js)...', '', 0, 41, 0, 7),
 
 ('Chi ha preso la mia bici per sbaglio?', 
 'Oggi pomeriggio qualcuno ha preso la mia bici dal parcheggio di fronte alla mensa. È una Graziella verde acqua con cestino. Spero sia stato uno sbaglio... se l''hai presa tu rimettila dove l''hai trovata please!', 
-'2025-12-22', 'Oggi pomeriggio qualcuno ha preso la mia bici dal parcheggio di fronte...', '', 23, 0, 6),
+'2025-12-22', 'Oggi pomeriggio qualcuno ha preso la mia bici dal parcheggio di fronte...', '', 0, 23, 0, 6),
 
 ('Recensione mensa: oggi TOP', 
 'Devo dire che oggi la mensa si è superata! Lasagne buonissime e il dolce era spettacolare. Ogni tanto fanno le cose per bene 👏', 
-'2025-12-22', 'Devo dire che oggi la mensa si è superata! Lasagne buonissime e il dolce...', '', 28, 0, 11),
+'2025-12-22', 'Devo dire che oggi la mensa si è superata! Lasagne buonissime e il dolce...', '', 0, 28, 0, 11),
 
 ('Problema con segreteria studenti', 
 'Qualcun altro ha problemi con la segreteria? Ho mandato 3 email per un problema con il piano di studi e nessuno mi risponde da 2 settimane. Come avete fatto voi?', 
-'2025-12-23', 'Qualcun altro ha problemi con la segreteria? Ho mandato 3 email per un...', '', 37, 0, 8),
+'2025-12-23', 'Qualcun altro ha problemi con la segreteria? Ho mandato 3 email per un...', '', 0, 37, 0, 8),
 
 ('Vendo Nintendo Switch + giochi', 
 'Vendo Nintendo Switch in ottime condizioni con: Mario Kart 8, Zelda BOTW, Animal Crossing. Tutto insieme 200€. La console ha ancora la garanzia. Solo Cesena, no spedizioni.', 
-'2025-12-23', 'Vendo Nintendo Switch in ottime condizioni con: Mario Kart 8, Zelda BOTW...', '', 14, 0, 9),
+'2025-12-23', 'Vendo Nintendo Switch in ottime condizioni con: Mario Kart 8, Zelda BOTW...', '', 0, 14, 0, 9),
 
 ('Confessione: il prof di Algoritmi', 
 'Devo confessare che il Prof. di Algoritmi mi terrorizza. Ogni volta che entra in aula il mio cuore inizia a battere fortissimo... ma non per amore, per PAURA. Chi altri vive questa situazione?', 
-'2025-12-24', 'Devo confessare che il Prof. di Algoritmi mi terrorizza. Ogni volta che entra...', '', 103, 1, 10),
+'2025-12-24', 'Devo confessare che il Prof. di Algoritmi mi terrorizza. Ogni volta che entra...', '', 0, 103, 1, 10),
 
 ('Buone feste a tutti!', 
 'Volevo augurare buone feste a tutta la community di Spotted Unibo Cesena! 🎄 Quest''anno è stato intenso ma ce l''abbiamo fatta. Ci rivediamo a gennaio più carichi che mai!', 
-'2025-12-24', 'Volevo augurare buone feste a tutta la community di Spotted Unibo Cesena! 🎄...', '', 78, 0, 2),
+'2025-12-24', 'Volevo augurare buone feste a tutta la community di Spotted Unibo Cesena! 🎄...', '', 0, 78, 0, 2),
 
 ('Capodanno: qualcuno organizza?', 
 'Ehi! Qualcuno sa di feste o eventi per Capodanno a Cesena o dintorni? Siamo un gruppo di 5 persone e cerchiamo qualcosa di carino. Budget sui 30-40€ a testa. Grazie!', 
-'2025-12-25', 'Qualcuno sa di feste o eventi per Capodanno a Cesena o dintorni? Siamo un gruppo...', '', 19, 0, 11),
+'2025-12-25', 'Qualcuno sa di feste o eventi per Capodanno a Cesena o dintorni? Siamo un gruppo...', '', 0, 19, 0, 11),
 
 ('Caricatore MacBook trovato', 
 'Ho trovato un caricatore MacBook in aula 3.2 di Informatica. Se è tuo contattami descrivendo il modello e ti dico dove ritirarlo!', 
-'2025-12-26', 'Ho trovato un caricatore MacBook in aula 3.2 di Informatica. Se è tuo...', '', 7, 0, 3),
+'2025-12-26', 'Ho trovato un caricatore MacBook in aula 3.2 di Informatica. Se è tuo...', '', 0, 7, 0, 3),
 
 ('Affitto monolocale da gennaio', 
 'Affitto monolocale arredato in centro Cesena, 5 min dalla stazione. 400€/mese + 50€ spese. Libero da gennaio. Solo studenti/esse, no fumatori. Per info e foto scrivetemi!', 
-'2025-12-27', 'Affitto monolocale arredato in centro Cesena, 5 min dalla stazione. 400€/mese...', '', 16, 0, 4),
+'2025-12-27', 'Affitto monolocale arredato in centro Cesena, 5 min dalla stazione. 400€/mese...', '', 0, 16, 0, 4),
 
 ('Cercasi insegnante di inglese', 'Sto cercando un insegnante di inglese per lezioni private a domicilio. Contattatemi se interessati!', 
-'2025-12-18', 'Sto cercando un insegnante di inglese per lezioni private a domicilio...', 'default.jpg', 5, 0, 1),
+'2025-12-18', 'Sto cercando un insegnante di inglese per lezioni private a domicilio...', 'default.jpg', 0, 5, 0, 1),
 
 ('Sciarpa persa', 'Ho perso una sciarpa rossa con motivi floreali. Se qualcuno la trovasse, per favore contattatemi.', 
-'2025-12-18', 'Ho perso una sciarpa rossa con motivi floreali. Se qualcuno la trovasse...', 'frog.jpg', 3, 0, 2);
+'2025-12-18', 'Ho perso una sciarpa rossa con motivi floreali. Se qualcuno la trovasse...', 'frog.jpg', 0, 3, 0, 2);
 
 INSERT INTO user_likes (utente, post) VALUES
 (1, 1),

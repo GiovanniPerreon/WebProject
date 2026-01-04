@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Pin/unpin removed from admin panel — handled on post page only
+
     document.querySelectorAll('.btn-delete-comment').forEach(btn => {
         btn.addEventListener('click', function() {
             const idcommento = this.getAttribute('data-id');

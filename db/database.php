@@ -20,12 +20,12 @@ class DatabaseHelper{
 
     // Get latest posts (with anonymous support)
     public function getPosts($n=-1){
-        $query = "SELECT p.idpost, p.titolopost, p.imgpost, p.anteprimapost, p.datapost, p.likes, p.anonimo, p.utente as idutente,
+        $query = "SELECT p.idpost, p.titolopost, p.imgpost, p.anteprimapost, p.datapost, p.likes, p.anonimo, p.utente as idutente, p.pinned,
                   CASE WHEN p.anonimo = 1 THEN 'Anonimo' ELSE u.nome END as nome,
                   u.amministratore
                   FROM post p
                   JOIN utente u ON p.utente = u.idutente
-                  ORDER BY p.datapost DESC";
+                  ORDER BY p.pinned DESC, p.datapost DESC";
         if($n > 0){
             $query .= " LIMIT ?";
         }
@@ -40,7 +40,7 @@ class DatabaseHelper{
 
     // Get a post by ID
     public function getPostById($id){
-        $query = "SELECT p.idpost, p.titolopost, p.imgpost, p.testopost, p.anteprimapost, p.datapost, p.likes, p.anonimo, p.utente as idutente,
+        $query = "SELECT p.idpost, p.titolopost, p.imgpost, p.testopost, p.anteprimapost, p.datapost, p.likes, p.anonimo, p.utente as idutente, p.pinned,
                   u.nome, u.amministratore
                   FROM post p
                   JOIN utente u ON p.utente = u.idutente
@@ -359,15 +359,17 @@ class DatabaseHelper{
     // Get all reports (for admin)
     public function getSegnalazioni($stato = null){
         $query = "SELECT s.*, 
-                  p.titolopost, 
-                  c.testocommento,
-                  u1.nome as nome_segnalante,
-                  u2.nome as nome_segnalato
-                  FROM segnalazione s
-                  LEFT JOIN post p ON s.post = p.idpost
-                  LEFT JOIN commento c ON s.commento = c.idcommento
-                  LEFT JOIN utente u1 ON s.utente_segnalante = u1.idutente
-                  LEFT JOIN utente u2 ON s.utente_segnalato = u2.idutente";
+              p.titolopost,
+              p.pinned,
+              c.testocommento,
+              c.post AS comment_post,
+              u1.nome as nome_segnalante,
+              u2.nome as nome_segnalato
+              FROM segnalazione s
+              LEFT JOIN post p ON s.post = p.idpost
+              LEFT JOIN commento c ON s.commento = c.idcommento
+              LEFT JOIN utente u1 ON s.utente_segnalante = u1.idutente
+              LEFT JOIN utente u2 ON s.utente_segnalato = u2.idutente";
         if($stato !== null){
             $query .= " WHERE s.stato = ?";
         }
@@ -408,6 +410,15 @@ class DatabaseHelper{
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         return $row ? $row['utente'] : null;
+    }
+
+    // Set or unset pinned flag for a post (admin)
+    public function setPostPinned($idpost, $pinned){
+        $p = $pinned ? 1 : 0;
+        $query = "UPDATE post SET pinned = ? WHERE idpost = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $p, $idpost);
+        return $stmt->execute();
     }
 
     // ==================== DIRECT MESSAGES ====================
