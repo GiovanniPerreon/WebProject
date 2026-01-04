@@ -25,12 +25,13 @@
     <nav>
         <ul>
             <li><a href="index.php">Home</a></li>
-            <li><a href="contatti.php">Contatti</a></li>
             <?php if(isUserLoggedIn()): ?>
+            <li><a href="messaggi.php">Messaggi<span id="unread-messages-badge" class="nav-badge" style="display: none;"></span></a></li>
             <li><a href="profilo.php">Profilo</a></li>
             <?php else: ?>
             <li><a href="login.php">Login</a></li>
             <?php endif; ?>
+            <li><a href="contatti.php">Contatti</a></li>
         </ul>
     </nav>
     <main>

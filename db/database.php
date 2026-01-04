@@ -409,5 +409,78 @@ class DatabaseHelper{
         $row = $result->fetch_assoc();
         return $row ? $row['utente'] : null;
     }
+
+    // ==================== DIRECT MESSAGES ====================
+    
+    // Send a message
+    public function sendMessage($mittente, $destinatario, $testo){
+        $query = "INSERT INTO messaggio(testomessaggio, datamessaggio, letto, mittente, destinatario) VALUES (?, NOW(), 0, ?, ?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('sii', $testo, $mittente, $destinatario);
+        return $stmt->execute();
+    }
+
+    // Get conversations list for a user (users they've messaged with)
+    public function getConversations($idutente){
+        $query = "SELECT DISTINCT 
+                    CASE 
+                        WHEN m.mittente = ? THEN m.destinatario 
+                        ELSE m.mittente 
+                    END as idutente,
+                    u.nome, u.username, u.imgprofilo,
+                    (SELECT testomessaggio FROM messaggio 
+                     WHERE (mittente = ? AND destinatario = u.idutente) 
+                        OR (mittente = u.idutente AND destinatario = ?)
+                     ORDER BY datamessaggio DESC LIMIT 1) as ultimo_messaggio,
+                    (SELECT datamessaggio FROM messaggio 
+                     WHERE (mittente = ? AND destinatario = u.idutente) 
+                        OR (mittente = u.idutente AND destinatario = ?)
+                     ORDER BY datamessaggio DESC LIMIT 1) as data_ultimo_messaggio,
+                    (SELECT COUNT(*) FROM messaggio 
+                     WHERE mittente = u.idutente AND destinatario = ? AND letto = 0) as non_letti
+                  FROM messaggio m
+                  JOIN utente u ON (CASE WHEN m.mittente = ? THEN m.destinatario ELSE m.mittente END = u.idutente)
+                  WHERE m.mittente = ? OR m.destinatario = ?
+                  ORDER BY data_ultimo_messaggio DESC";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('iiiiiiiii', $idutente, $idutente, $idutente, $idutente, $idutente, $idutente, $idutente, $idutente, $idutente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    // Get messages between two users
+    public function getMessagesBetweenUsers($user1, $user2){
+        $query = "SELECT m.idmessaggio, m.testomessaggio, m.datamessaggio, m.letto, m.mittente, m.destinatario,
+                  u.nome, u.username, u.imgprofilo
+                  FROM messaggio m
+                  JOIN utente u ON m.mittente = u.idutente
+                  WHERE (m.mittente = ? AND m.destinatario = ?) OR (m.mittente = ? AND m.destinatario = ?)
+                  ORDER BY m.datamessaggio ASC";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('iiii', $user1, $user2, $user2, $user1);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    // Mark messages as read
+    public function markMessagesAsRead($mittente, $destinatario){
+        $query = "UPDATE messaggio SET letto = 1 WHERE mittente = ? AND destinatario = ? AND letto = 0";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $mittente, $destinatario);
+        return $stmt->execute();
+    }
+
+    // Get unread message count
+    public function getUnreadMessageCount($idutente){
+        $query = "SELECT COUNT(*) as count FROM messaggio WHERE destinatario = ? AND letto = 0";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $idutente);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
 }
 ?>

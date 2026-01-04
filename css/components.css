@@ -173,7 +173,7 @@ main > article > h2 {
 main > article > img {
     width: 100%;
     height: auto;
-    max-height: 400px;
+    max-height: 250px;
     object-fit: cover;
     border-radius: var(--radius-md);
     margin: var(--space-md) 0;
@@ -189,29 +189,42 @@ main > article > img {
     flex-wrap: wrap;
 }
 
+/* MOBILE FIRST: Stili di base per mobile */
+.post-preview,
+main > article {
+    padding: var(--space-md);
+}
+
 .post-actions {
     margin: var(--space-lg) 0;
     display: flex;
+    flex-direction: column;
     gap: var(--space-sm);
-    flex-wrap: wrap;
-    align-items: center;
+    align-items: stretch;
 }
 
-@media screen and (max-width: 767px) {
+.post-actions button,
+.btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Tablet e Desktop (768px+) */
+@media screen and (min-width: 768px) {
     .post-preview,
     main > article {
-        padding: var(--space-md);
+        padding: var(--space-lg);
     }
 
     .post-actions {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
     }
 
     .post-actions button,
     .btn {
-        width: 100%;
-        justify-content: center;
+        width: auto;
     }
 }
 

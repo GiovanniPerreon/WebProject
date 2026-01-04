@@ -53,6 +53,10 @@
         <a href="admin.php" class="btn btn-admin">⚙️ Pannello Amministratore</a>
         <?php endif; ?>
     </div>
+    <?php else: ?>
+    <div class="profilo-actions">
+        <a href="messaggi.php?user=<?php echo $templateParams["user"]["idutente"]; ?>" class="btn btn-primary">💬 Invia Messaggio</a>
+    </div>
     <?php endif; ?>
 </div>
 

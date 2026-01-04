@@ -67,10 +67,11 @@ nav ul li a:hover {
 }
 
 /* ==================== MAIN LAYOUT ==================== */
+/* MOBILE FIRST: Stili di base per mobile */
 body > main {
     max-width: 800px;
     margin: var(--space-xl) auto;
-    padding: 0 var(--space-md);
+    padding: 0 var(--space-sm);
 }
 
 main > h2 {
@@ -118,18 +119,21 @@ aside > section > ul > li > a:hover {
     padding-left: var(--space-sm);
 }
 
-/* ==================== RESPONSIVE DESIGN ==================== */
+/* ==================== RESPONSIVE DESIGN - MOBILE FIRST ==================== */
+/* Tablet e Desktop (768px+) */
 @media screen and (min-width: 768px) {
-    /* Desktop layout with sidebar */
-    main, aside {
-        display: inline-block;
-        vertical-align: top;
-    }
-
+    /* Aumenta padding su desktop */
     body > main {
+        padding: 0 var(--space-md);
         width: 60%;
         margin-left: 5%;
         margin-right: 2%;
+    }
+    
+    /* Desktop layout con sidebar */
+    main, aside {
+        display: inline-block;
+        vertical-align: top;
     }
 
     aside {
@@ -145,12 +149,5 @@ aside > section > ul > li > a:hover {
 
     nav ul li {
         flex: 0 1 auto;
-    }
-}
-
-@media screen and (max-width: 767px) {
-    /* Mobile adjustments */
-    body > main {
-        padding: 0 var(--space-sm);
     }
 }

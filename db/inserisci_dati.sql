@@ -272,3 +272,48 @@ INSERT INTO segnalazione (motivo, descrizione, datasegnalazione, stato, post, co
 ('Contenuto inappropriato', 'La confessione anonima è un po'' troppo esplicita', '2025-12-23 14:00:00', 'resolved', 7, NULL, 3, NULL),
 ('Altro', 'Questo utente sta spammando lo stesso annuncio più volte', '2025-12-24 11:00:00', 'pending', 22, NULL, 6, 4),
 ('Violazione copyright', 'Gli appunti condivisi potrebbero violare il copyright del professore', '2025-12-25 16:00:00', 'pending', 11, NULL, 9, 4);
+
+-- ==================== MESSAGGI ====================
+-- Conversazione tra Marco Bianchi (3) e Sara Verdi (4)
+INSERT INTO messaggio (testomessaggio, datamessaggio, letto, mittente, destinatario) VALUES
+('Ciao! Ho visto il tuo post sui libri. Sono interessato al libro di Analisi 1. È ancora disponibile?', '2025-12-16 10:30:00', 1, 3, 4),
+('Ciao Marco! Sì, è ancora disponibile. Quando ti va di vederlo?', '2025-12-16 11:15:00', 1, 4, 3),
+('Perfetto! Domani pomeriggio in università verso le 15? Ci vediamo in biblioteca?', '2025-12-16 11:20:00', 1, 3, 4),
+('Va benissimo! Ci vediamo domani alle 15 all''ingresso della biblioteca centrale 👍', '2025-12-16 11:25:00', 1, 4, 3),
+('Ottimo, a domani!', '2025-12-16 11:30:00', 1, 3, 4),
+
+-- Conversazione tra Giulia Rossi (2) e Luca Martini (5)
+('Ciao Giulia! Ho visto che sei amministratrice. Posso chiederti info sulla festa del 20 dicembre?', '2025-12-18 14:00:00', 1, 5, 2),
+('Certo! Cosa vuoi sapere?', '2025-12-18 14:10:00', 1, 2, 5),
+('È confermata al Circolo Universitario? E ci sono ancora biglietti disponibili?', '2025-12-18 14:12:00', 1, 5, 2),
+('Sì confermata! E sì, ci sono ancora molti biglietti. Puoi comprarli in DM o al circolo fino a giovedì.', '2025-12-18 14:20:00', 1, 2, 5),
+('Perfetto, grazie mille!', '2025-12-18 14:22:00', 1, 5, 2),
+
+-- Conversazione tra Elena Conti (6) e Alessandro Ferrari (7)
+('Ciao! Hai visto il mio post sul gruppo studio per Basi di Dati? Ti va di unirti?', '2025-12-17 16:00:00', 1, 6, 7),
+('Ciao Elena! Sì, mi interesserebbe molto. Quando pensavi di iniziare?', '2025-12-17 16:30:00', 1, 7, 6),
+('Da lunedì prossimo, lunedì e giovedì dalle 14 alle 17. Ti va bene?', '2025-12-17 16:45:00', 1, 6, 7),
+('Perfetto! Lunedì non posso ma giovedì ci sono sicuramente.', '2025-12-17 17:00:00', 1, 7, 6),
+('Va bene! Ti aggiungo al gruppo WhatsApp dove ci coordiniamo. Ti mando il link.', '2025-12-17 17:05:00', 1, 6, 7),
+
+-- Conversazione tra Francesca Galli (8) e Davide Pellegrini (9)
+('Ciao! Ho visto che cerchi un passaggio per Bologna. Io parto lunedì alle 8:30, troppo presto?', '2025-12-19 18:00:00', 1, 9, 8),
+('Ciao Davide! Le 8:30 vanno benissimo! Grazie mille, mi salvi la vita!', '2025-12-19 18:15:00', 1, 8, 9),
+('Nessun problema! Dove posso passarti a prendere?', '2025-12-19 18:20:00', 1, 9, 8),
+('Abito in Via Saffi, vicino al parcheggio della stazione. Ti va bene?', '2025-12-19 18:25:00', 1, 8, 9),
+('Perfetto, conosco. Ci vediamo lunedì alle 8:30 al parcheggio! Ti mando un messaggio quando arrivo.', '2025-12-19 18:30:00', 1, 9, 8),
+('Grazie ancora! A lunedì!', '2025-12-19 18:32:00', 1, 8, 9),
+
+-- Conversazione tra Chiara Lombardi (10) e Matteo Santini (11)
+('Ciao! Anche tu vai in palestra al CUS? Che giorni ci vai?', '2025-12-19 20:00:00', 1, 11, 10),
+('Ciao Matteo! Sì vado spesso. Di solito lunedì, mercoledì e venerdì. Tu?', '2025-12-19 20:15:00', 1, 10, 11),
+('Io martedì e giovedì ma potrei cambiare. Magari ci vediamo mercoledì?', '2025-12-19 20:20:00', 1, 11, 10),
+('Sì dai! Mercoledì vado verso le 15:30. Ti va bene quell''orario?', '2025-12-19 20:25:00', 1, 10, 11),
+('Perfetto! Ci vediamo mercoledì in palestra allora 💪', '2025-12-19 20:30:00', 1, 11, 10),
+
+-- Messaggi non letti recenti
+('Ciao! Sono interessato al tuo Nintendo Switch. È ancora disponibile?', '2025-12-27 10:00:00', 0, 5, 9),
+('Hey, ti va di studiare insieme per l''esame di Algoritmi?', '2025-12-27 11:30:00', 0, 7, 6),
+('Grazie per gli appunti! Sono stati utilissimi! 🙏', '2025-12-27 12:00:00', 0, 8, 4),
+('Ciao, hai per caso trovato delle chiavi in biblioteca ieri?', '2025-12-27 13:15:00', 0, 3, 5),
+('Sei riuscito a risolvere il problema con la segreteria? Io ho lo stesso problema!', '2025-12-27 14:00:00', 0, 10, 8);

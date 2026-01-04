@@ -158,6 +158,32 @@ CREATE TABLE IF NOT EXISTS `spotted_db`.`segnalazione` (
     ON DELETE SET NULL
 ) ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `spotted_db`.`messaggio`
+-- -----------------------------------------------------ù
+CREATE TABLE IF NOT EXISTS `spotted_db`.`messaggio` (
+  `idmessaggio` INT NOT NULL AUTO_INCREMENT,
+  `testomessaggio` TEXT NOT NULL,
+  `datamessaggio` DATETIME NOT NULL,
+  `letto` TINYINT NOT NULL DEFAULT 0,
+  `mittente` INT NOT NULL,
+  `destinatario` INT NOT NULL,
+  PRIMARY KEY (`idmessaggio`),
+  INDEX `fk_messaggio_mittente_idx` (`mittente` ASC),
+  INDEX `fk_messaggio_destinatario_idx` (`destinatario` ASC),
+  INDEX `idx_conversation` (`mittente` ASC, `destinatario` ASC, `datamessaggio` DESC),
+  CONSTRAINT `fk_messaggio_mittente`
+    FOREIGN KEY (`mittente`)
+    REFERENCES `spotted_db`.`utente` (`idutente`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_messaggio_destinatario`
+    FOREIGN KEY (`destinatario`)
+    REFERENCES `spotted_db`.`utente` (`idutente`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
