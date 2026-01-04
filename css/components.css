@@ -57,6 +57,19 @@ button:not(.modal-close):not(.admin-delete-btn):not(.admin-delete-comment-btn):h
     background-color: var(--bg-hover);
 }
 
+/* Make Logout button clearer (lighter green with good contrast) */
+.profilo-actions a[href="logout.php"].btn,
+a[href="logout.php"].btn {
+    background-color: #ceffce;
+    color: #0b2a0b;
+    border-color: #c8e8c3;
+}
+.profilo-actions a[href="logout.php"].btn:hover,
+a[href="logout.php"].btn:hover {
+    background-color: #80b972;
+    border-color: #b6ddb0;
+}
+
 .btn-admin {
     background-color: var(--accent-red);
     color: var(--bg-primary);

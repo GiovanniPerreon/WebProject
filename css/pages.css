@@ -171,6 +171,14 @@
     will-change: transform;
 }
 
+/* Ensure action buttons keep black/dark text (do not turn green) */
+.btn-view,
+.btn-edit,
+.btn-delete,
+.btn-admin {
+    color: #000 !important;
+}
+
 .btn-view:hover {
     background-color: #4a8bb5;
     border-color: #4a8bb5;
