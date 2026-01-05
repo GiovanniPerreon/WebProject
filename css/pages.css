@@ -1020,6 +1020,56 @@ table th {
     margin-left: var(--space-xs);
 }
 
+/* Loading state for chat */
+.loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.loading-state::before {
+    content: "⏳ ";
+    margin-right: 8px;
+}
+
+/* Optimistic message (sent but not yet confirmed by server) */
+.message.optimistic .message-content {
+    opacity: 0.7;
+    position: relative;
+}
+
+.message.optimistic .message-content::after {
+    content: "⏳";
+    margin-left: 8px;
+    font-size: 12px;
+}
+
+/* Message send animation */
+@keyframes messageSent {
+    0% {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.message {
+    animation: messageSent 0.3s ease-out;
+}
+
+/* Disable submit button state */
+.message-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--bg-tertiary);
+}
+
 /* Mobile responsive for messages */
 @media screen and (min-width: 768px) {
     .messages-container {

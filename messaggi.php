@@ -25,6 +25,7 @@ if($conversationWith){
 
 $templateParams["titolo"] = "Messaggi - Spotted Unibo Cesena";
 $templateParams["nome"] = "messages.php";
+$templateParams["js"] = array("js/messages.js");
 
 require 'template/base.php';
 ?>

@@ -1,5 +1,10 @@
 <h2>Messaggi</h2>
 
+<script>
+// Inject current user ID for JavaScript
+window.currentUserId = <?php echo $_SESSION['idutente']; ?>;
+</script>
+
 <div class="messages-container">
         <!-- Conversations List -->
         <div class="conversations-list">
@@ -55,7 +60,7 @@
                 </div>
 
                 <!-- Message Input -->
-                <form class="message-form" id="message-form" action="api-messages.php" method="POST">
+                <form class="message-form" id="message-form">
                     <input type="hidden" name="action" value="sendMessage">
                     <input type="hidden" name="destinatario" value="<?php echo $templateParams["selectedUser"]['idutente']; ?>">
                     <textarea name="messaggio" placeholder="Scrivi un messaggio..." required maxlength="1000"></textarea>
