@@ -39,10 +39,6 @@
             <span class="stat-number"><?php echo $templateParams["postCount"]; ?></span>
             <span class="stat-label">Post</span>
         </div>
-        <div class="stat">
-            <span class="stat-number"><?php echo $templateParams["likesReceived"]; ?></span>
-            <span class="stat-label">Like ricevuti</span>
-        </div>
     </div>
 
     <?php if($templateParams["isOwnProfile"]): ?>
@@ -86,7 +82,6 @@
                 <p class="post-preview"><?php echo $post["anteprimapost"]; ?></p>
                 <p class="post-meta">
                     <span class="post-date">📅 <?php echo $post["datapost"]; ?></span>
-                    <span class="post-likes">❤️ <?php echo $post["likes"]; ?> like</span>
                 </p>
                 <div class="post-actions-profilo">
                     <a href="post.php?id=<?php echo $post["idpost"]; ?>" class="btn-small btn-view">👁️ Vedi</a>

@@ -43,15 +43,7 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
     </p>
     
     <div class="post-actions">
-        <?php if(isUserLoggedIn()): 
-            $hasLiked = $dbh->hasUserLikedPost($_SESSION['idutente'], $post["idpost"]);
-        ?>
-        <form action="processa-like.php" method="POST" style="display:contents;">
-            <input type="hidden" name="idpost" value="<?php echo $post["idpost"]; ?>" />
-            <button type="submit" class="like-btn <?php echo $hasLiked ? 'liked' : ''; ?>">
-                <?php echo $hasLiked ? '❤️' : '🤍'; ?> Like (<?php echo $post["likes"]; ?>)
-            </button>
-        </form>
+        <?php if(isUserLoggedIn()): ?>
         <button class="segnala-btn" data-idpost="<?php echo $post["idpost"]; ?>">⚠️ Segnala</button>
         <?php if(isUserAdmin()): ?>
         <button class="btn-pin-post" data-id="<?php echo $post["idpost"]; ?>" data-pinned="<?php echo isset($post['pinned']) && $post['pinned'] ? 1 : 0; ?>">
@@ -59,12 +51,10 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
         </button>
         <?php endif; ?>
         <button class="condividi-btn" data-post-id="<?php echo $post["idpost"]; ?>">🔗 Condividi</button>
-        
+
         <?php if(isUserAdmin()): ?>
         <button class="admin-delete-btn" onclick="deletePost(<?php echo $post['idpost']; ?>)">🗑️ Elimina</button>
         <?php endif; ?>
-        <?php else: ?>
-        <span class="like-display">❤️ <?php echo $post["likes"]; ?> Like</span>
         <?php endif; ?>
     </div>
     
