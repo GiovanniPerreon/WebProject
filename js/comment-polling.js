@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Global Comment Notifications Module
+ * Comment Polling Module
  * Polls for new comments on user's posts across all pages
- * Shows notifications when NOT viewing the specific post
+ * Updates notifications and shows toast alerts when NOT viewing the specific post
  */
 
 const GlobalCommentNotifications = {

@@ -149,7 +149,7 @@
     <script src="js/post-actions.js"></script>
     <!-- Message Polling (updates badge on all pages when logged in) -->
     <script src="js/message-polling.js"></script>
-    <!-- Comment Notifications (notifies post authors of new comments globally) -->
-    <script src="js/comment-notifications.js"></script>
+    <!-- Comment Polling (notifies post authors of new comments globally) -->
+    <script src="js/comment-polling.js"></script>
 </body>
 </html>
