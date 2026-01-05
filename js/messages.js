@@ -9,8 +9,11 @@
 const MessagesManager = {
     currentUserId: null,
     pollingInterval: null,
+    conversationListPollingInterval: null,
     pollingFrequency: 3000, // 3 seconds
+    conversationListPollingFrequency: 5000, // 5 seconds for conversation list
     isPolling: false,
+    isConversationListPolling: false,
     lastMessageId: null,
 
     /**
@@ -33,6 +36,9 @@ const MessagesManager = {
             this.markAsRead(userId);
             this.startPolling();
         }
+
+        // ALWAYS start conversation list polling (updates badges)
+        this.startConversationListPolling();
     },
 
     /**
@@ -461,10 +467,8 @@ const MessagesManager = {
 
         this.scrollToBottom();
 
-        // Optional: Show notification for new messages from other user
-        if (messages.length > 0 && messages[0].mittente != currentUserIdSession) {
-            Notifications.info(`Nuovo messaggio ricevuto`);
-        }
+        // DON'T show notification when inside the conversation
+        // The global notification system handles this when user is NOT on messages page
     },
 
     /**
@@ -518,6 +522,91 @@ const MessagesManager = {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    },
+
+    /**
+     * Start polling for conversation list updates (badges, new conversations)
+     */
+    startConversationListPolling() {
+        if (this.isConversationListPolling) return;
+
+        this.isConversationListPolling = true;
+
+        this.conversationListPollingInterval = setInterval(async () => {
+            await this.updateConversationList();
+        }, this.conversationListPollingFrequency);
+
+        console.log('Conversation list polling started');
+    },
+
+    /**
+     * Stop conversation list polling
+     */
+    stopConversationListPolling() {
+        if (this.conversationListPollingInterval) {
+            clearInterval(this.conversationListPollingInterval);
+            this.conversationListPollingInterval = null;
+            this.isConversationListPolling = false;
+            console.log('Conversation list polling stopped');
+        }
+    },
+
+    /**
+     * Update conversation list (fetch latest data and update badges)
+     */
+    async updateConversationList() {
+        try {
+            const response = await fetch('api-messages.php?action=getConversationList');
+            const data = await response.json();
+
+            if (data.success && data.conversations) {
+                // Update each conversation in the sidebar
+                data.conversations.forEach(conv => {
+                    this.updateConversationItem(conv);
+                });
+
+                // Update total unread count in navigation
+                this.updateNavigationBadge();
+            }
+        } catch (err) {
+            console.error('Conversation list update error:', err);
+        }
+    },
+
+    /**
+     * Update a single conversation item in the sidebar
+     */
+    updateConversationItem(conv) {
+        const conversationItem = document.querySelector(`.conversation-item[href*="user=${conv.idutente}"]`);
+
+        if (!conversationItem) {
+            // Conversation doesn't exist in sidebar yet - could add it dynamically here
+            return;
+        }
+
+        // Update last message text
+        const lastMessageEl = conversationItem.querySelector('.last-message');
+        if (lastMessageEl && conv.ultimo_messaggio) {
+            const truncated = conv.ultimo_messaggio.length > 50
+                ? conv.ultimo_messaggio.substring(0, 50) + '...'
+                : conv.ultimo_messaggio;
+            lastMessageEl.textContent = truncated;
+        }
+
+        // Update timestamp
+        const timeEl = conversationItem.querySelector('.message-time');
+        if (timeEl && conv.data_ultimo_messaggio) {
+            const date = new Date(conv.data_ultimo_messaggio);
+            timeEl.textContent = date.toLocaleDateString('it-IT', {
+                day: '2-digit',
+                month: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Update unread badge
+        this.updateUnreadBadge(conv.idutente, parseInt(conv.non_letti) || 0);
     }
 };
 
@@ -532,6 +621,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Stop polling when user leaves page
 window.addEventListener('beforeunload', () => {
     MessagesManager.stopPolling();
+    MessagesManager.stopConversationListPolling();
 });
 
 // Handle browser back/forward

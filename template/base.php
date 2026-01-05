@@ -25,8 +25,10 @@
     <nav>
         <ul>
             <li><a href="index.php">Home</a></li>
-            <?php if(isUserLoggedIn()): ?>
-            <li><a href="messaggi.php">Messaggi<span id="unread-messages-badge" class="nav-badge" style="display: none;"></span></a></li>
+            <?php if(isUserLoggedIn()):
+                $unreadCount = $dbh->getUnreadMessageCount($_SESSION['idutente']);
+            ?>
+            <li><a href="messaggi.php">Messaggi<span id="unread-messages-badge" class="nav-badge" style="display: <?php echo $unreadCount > 0 ? 'inline' : 'none'; ?>;"><?php echo $unreadCount > 0 ? $unreadCount : ''; ?></span></a></li>
             <li><a href="profilo.php">Profilo</a></li>
             <?php else: ?>
             <li><a href="login.php">Login</a></li>
@@ -145,5 +147,7 @@
     <!-- Toast Notifications & Post Actions -->
     <script src="js/notifications.js"></script>
     <script src="js/post-actions.js"></script>
+    <!-- Global Message Notifications (runs on all pages when logged in) -->
+    <script src="js/message-notifications.js"></script>
 </body>
 </html>

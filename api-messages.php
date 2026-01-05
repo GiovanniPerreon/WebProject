@@ -80,6 +80,15 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
                 ));
                 break;
 
+            case 'getConversationList':
+                // Get updated conversation list with unread counts
+                $conversations = $dbh->getConversations($idutente);
+                echo json_encode(array(
+                    "success" => true,
+                    "conversations" => $conversations
+                ));
+                break;
+
             default:
                 echo json_encode(array("success" => false, "error" => "Azione GET non valida"));
         }
