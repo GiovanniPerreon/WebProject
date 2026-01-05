@@ -147,7 +147,7 @@
     <!-- Toast Notifications & Post Actions -->
     <script src="js/notifications.js"></script>
     <script src="js/post-actions.js"></script>
-    <!-- Global Message Notifications (runs on all pages when logged in) -->
-    <script src="js/message-notifications.js"></script>
+    <!-- Message Polling (updates badge on all pages when logged in) -->
+    <script src="js/message-polling.js"></script>
 </body>
 </html>

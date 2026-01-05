@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Global Message Notifications Module
- * Runs on ALL pages to notify users of new messages
- * Shows desktop notifications when NOT on messages page
+ * Message Polling Module
+ * Polls for new messages on all pages (except messages page)
+ * Updates navigation badge and shows toast notifications
  */
 
 const GlobalMessageNotifications = {
