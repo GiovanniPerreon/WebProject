@@ -812,3 +812,16 @@ main > article > section > form button[type="submit"]:hover {
     border-color: var(--accent-blue);
     background-color: rgba(127, 187, 179, 0.1);
 }
+
+
+/* ==================== COMMENT ANIMATIONS ==================== */
+@keyframes commentAdded {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
