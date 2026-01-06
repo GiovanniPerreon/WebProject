@@ -7,7 +7,6 @@ if(!isUserLoggedIn() || !isUserAdmin()){
 }
 
 $templateParams["titolo"] = "Spotted Unibo Cesena - Pannello Admin";
-$templateParams["js"] = array("js/admin.js");
 
 $view = isset($_GET["view"]) ? $_GET["view"] : "dashboard";
 $templateParams["view"] = $view;

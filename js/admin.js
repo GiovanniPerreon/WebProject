@@ -18,15 +18,18 @@ const AdminPanel = {
         this.initSaveTagButtons();
         this.initDeleteTagButtons();
         this.initReportStatusSelects();
+        this.initPinPostButtons();
     },
 
     /**
      * Initialize delete post buttons
      */
     initDeletePostButtons() {
-        document.querySelectorAll('.btn-delete-post').forEach(btn => {
+        // Handle both admin panel buttons and post page buttons
+        document.querySelectorAll('.btn-delete-post, .admin-delete-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const idpost = e.currentTarget.getAttribute('data-id');
+                const idpost = e.currentTarget.getAttribute('data-id') ||
+                               e.currentTarget.getAttribute('data-idpost');
 
                 if (confirm('Sei sicuro di voler eliminare questo post? Questa azione è irreversibile.')) {
                     this.deletePost(idpost, e.currentTarget);
@@ -41,7 +44,12 @@ const AdminPanel = {
     async deletePost(idpost, button) {
         // Disable button during request
         button.disabled = true;
+        const originalText = button.textContent;
         button.textContent = 'Eliminazione...';
+
+        // Check if we're in admin panel or on a post page
+        const isInAdminPanel = button.closest('.segnalazione-item') !== null;
+        const parentItem = isInAdminPanel ? button.closest('.segnalazione-item') : null;
 
         try {
             const response = await fetch('api-admin.php', {
@@ -55,18 +63,31 @@ const AdminPanel = {
             if (data.success) {
                 Notifications.success(data.message || 'Post eliminato con successo');
 
-                // Reload page after short delay to show notification
-                setTimeout(() => location.reload(), 1000);
+                if (isInAdminPanel && parentItem) {
+                    // In admin panel: Remove item from DOM with animation
+                    parentItem.style.opacity = '0';
+                    parentItem.style.transform = 'translateX(-20px)';
+                    parentItem.style.transition = 'all 0.3s ease';
+
+                    setTimeout(() => {
+                        parentItem.remove();
+                    }, 300);
+                } else {
+                    // On post page: Redirect to homepage after short delay
+                    setTimeout(() => {
+                        window.location.href = 'index.php';
+                    }, 1000);
+                }
             } else {
                 Notifications.error(data.message || 'Errore durante l\'eliminazione del post');
                 button.disabled = false;
-                button.textContent = 'Elimina';
+                button.textContent = originalText;
             }
         } catch (err) {
             console.error('Delete post error:', err);
             Notifications.error('Errore di connessione');
             button.disabled = false;
-            button.textContent = 'Elimina';
+            button.textContent = originalText;
         }
     },
 
@@ -74,9 +95,11 @@ const AdminPanel = {
      * Initialize delete comment buttons
      */
     initDeleteCommentButtons() {
-        document.querySelectorAll('.btn-delete-comment').forEach(btn => {
+        // Handle both admin panel buttons and comment buttons
+        document.querySelectorAll('.btn-delete-comment, .admin-delete-comment-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const idcommento = e.currentTarget.getAttribute('data-id');
+                const idcommento = e.currentTarget.getAttribute('data-id') ||
+                                   e.currentTarget.getAttribute('data-idcommento');
 
                 if (confirm('Sei sicuro di voler eliminare questo commento?')) {
                     this.deleteComment(idcommento, e.currentTarget);
@@ -91,7 +114,12 @@ const AdminPanel = {
     async deleteComment(idcommento, button) {
         // Disable button during request
         button.disabled = true;
+        const originalText = button.textContent;
         button.textContent = 'Eliminazione...';
+
+        // Check if we're in admin panel or on a post page
+        const isInAdminPanel = button.closest('.segnalazione-item') !== null;
+        const parentItem = isInAdminPanel ? button.closest('.segnalazione-item') : null;
 
         try {
             const response = await fetch('api-admin.php', {
@@ -105,18 +133,29 @@ const AdminPanel = {
             if (data.success) {
                 Notifications.success(data.message || 'Commento eliminato con successo');
 
-                // Reload page after short delay to show notification
-                setTimeout(() => location.reload(), 1000);
+                if (isInAdminPanel && parentItem) {
+                    // In admin panel: Remove item from DOM with animation
+                    parentItem.style.opacity = '0';
+                    parentItem.style.transform = 'translateX(-20px)';
+                    parentItem.style.transition = 'all 0.3s ease';
+
+                    setTimeout(() => {
+                        parentItem.remove();
+                    }, 300);
+                } else {
+                    // On post page: Reload to show updated comments
+                    setTimeout(() => location.reload(), 1000);
+                }
             } else {
                 Notifications.error(data.message || 'Errore durante l\'eliminazione del commento');
                 button.disabled = false;
-                button.textContent = 'Elimina';
+                button.textContent = originalText;
             }
         } catch (err) {
             console.error('Delete comment error:', err);
             Notifications.error('Errore di connessione');
             button.disabled = false;
-            button.textContent = 'Elimina';
+            button.textContent = originalText;
         }
     },
 
@@ -375,13 +414,76 @@ const AdminPanel = {
         };
 
         return labels[stato] || stato;
+    },
+
+    /**
+     * Initialize pin post buttons
+     */
+    initPinPostButtons() {
+        document.querySelectorAll('.btn-pin-post').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idpost = e.currentTarget.getAttribute('data-id');
+                const pinned = e.currentTarget.getAttribute('data-pinned') === '1';
+
+                this.togglePinPost(idpost, pinned, e.currentTarget);
+            });
+        });
+    },
+
+    /**
+     * Toggle pin status of a post
+     */
+    async togglePinPost(idpost, currentlyPinned, button) {
+        const newPinned = currentlyPinned ? 0 : 1;
+        const confirmMessage = newPinned
+            ? 'Vuoi pinnare questo post?'
+            : 'Vuoi rimuovere il pin da questo post?';
+
+        if (!confirm(confirmMessage)) {
+            return;
+        }
+
+        // Disable button during request
+        button.disabled = true;
+        const originalText = button.textContent;
+        button.textContent = newPinned ? 'Pinnando...' : 'Rimuovendo...';
+
+        try {
+            const response = await fetch('api-admin.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `action=pin_post&idpost=${idpost}&pinned=${newPinned}`
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                Notifications.success(data.message || 'Operazione completata con successo');
+
+                // Reload page after short delay to show notification
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                Notifications.error(data.message || 'Errore durante l\'operazione');
+                button.disabled = false;
+                button.textContent = originalText;
+            }
+        } catch (err) {
+            console.error('Pin post error:', err);
+            Notifications.error('Errore di connessione');
+            button.disabled = false;
+            button.textContent = originalText;
+        }
     }
 };
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Only initialize if we're on admin page
-    if (document.querySelector('.admin-section') || document.getElementById('addTagForm')) {
+    // Initialize if we're on admin page OR if admin buttons are present on any page
+    if (document.querySelector('.admin-section') ||
+        document.getElementById('addTagForm') ||
+        document.querySelector('.admin-delete-btn') ||
+        document.querySelector('.admin-delete-comment-btn') ||
+        document.querySelector('.btn-pin-post')) {
         AdminPanel.init();
     }
 });

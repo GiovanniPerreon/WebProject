@@ -53,7 +53,7 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
         <button class="condividi-btn" data-post-id="<?php echo $post["idpost"]; ?>">🔗 Condividi</button>
 
         <?php if(isUserAdmin()): ?>
-        <button class="admin-delete-btn" onclick="deletePost(<?php echo $post['idpost']; ?>)">🗑️ Elimina</button>
+        <button class="admin-delete-btn" data-id="<?php echo $post['idpost']; ?>">🗑️ Elimina</button>
         <?php endif; ?>
         <?php endif; ?>
     </div>
@@ -100,7 +100,7 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
                 <button class="segnala-btn icon-only" title="Segnala commento" aria-label="Segnala commento" data-idcommento="<?php echo $commento['idcommento']; ?>" data-idpost="<?php echo $post['idpost']; ?>">⚠️</button>
                 <?php endif; ?>
                 <?php if(isUserAdmin()): ?>
-                <button class="admin-delete-comment-btn" onclick="deleteComment(<?php echo $commento['idcommento']; ?>)">🗑️</button>
+                <button class="admin-delete-comment-btn" data-id="<?php echo $commento['idcommento']; ?>">🗑️</button>
                 <?php endif; ?>
             </p>
         </article>
@@ -127,70 +127,3 @@ $adminBadge = (isset($post["amministratore"]) && $post["amministratore"]) ? ' <s
     </section>
 </article>
 <?php endif; ?>
-
-<script>
-function deletePost(idpost) {
-    if(confirm('Sei sicuro di voler eliminare questo post?')) {
-        fetch('api-admin.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: 'action=deletePost&id=' + idpost
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success) {
-                window.location.href = 'index.php';
-            } else {
-                alert(data.error || 'Errore durante l\'eliminazione');
-            }
-        });
-    }
-}
-
-function deleteComment(idcommento) {
-    if(confirm('Sei sicuro di voler eliminare questo commento?')) {
-        fetch('api-admin.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: 'action=deleteComment&id=' + idcommento
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success) {
-                location.reload();
-            } else {
-                alert(data.error || 'Errore durante l\'eliminazione');
-            }
-        });
-    }
-}
-</script>
-<script>
-function togglePinPost(idpost, pinned) {
-    const newPinned = pinned ? 0 : 1;
-    if(!confirm(newPinned ? 'Vuoi pinnare questo post?' : 'Vuoi rimuovere il pin da questo post?')) return;
-    fetch('api-admin.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'action=pin_post&idpost=' + idpost + '&pinned=' + newPinned
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert(data.message || (data.success ? 'Operazione completata' : 'Errore'));
-        if(data.success) location.reload();
-    })
-    .catch(err => alert('Errore nella richiesta'));
-}
-
-// Attach click handler to pin button if present (fallback when admin.js not loaded)
-document.addEventListener('DOMContentLoaded', function() {
-    const btn = document.querySelector('.btn-pin-post');
-    if(btn){
-        btn.addEventListener('click', function(){
-            const id = this.getAttribute('data-id');
-            const pinned = this.getAttribute('data-pinned') === '1' ? 1 : 0;
-            togglePinPost(id, pinned);
-        });
-    }
-});
-</script>
