@@ -4,12 +4,14 @@
  * Forms Module
  * Handles form validation and file upload enhancements
  *
+ * DEPENDENCIES: Requires main.js (SpottedApp) to be loaded first
+ *
  * Features:
- * - Real-time validation with debouncing
+ * - Real-time validation with debouncing (uses SpottedApp.utils.debounce)
  * - Password strength indicator
  * - Password confirmation matching
  * - File upload preview with drag-and-drop
- * - File size/type validation
+ * - File size/type validation (uses SpottedApp.utils.validateImageFile)
  * - Accessibility support (ARIA attributes)
  * - Progressive enhancement
  */
@@ -20,10 +22,6 @@ const FormsModule = (() => {
     // ========================================
 
     const CONFIG = {
-        FILE_MAX_SIZE: 500 * 1024, // 500KB in bytes
-        ALLOWED_EXTENSIONS: ['jpg', 'jpeg', 'png', 'gif'],
-        ALLOWED_MIME_TYPES: ['image/jpeg', 'image/png', 'image/gif'],
-        DEBOUNCE_DELAY: 300, // milliseconds
         PASSWORD_MIN_LENGTH: 6,
         USERNAME_MIN_LENGTH: 3
     };
@@ -32,34 +30,14 @@ const FormsModule = (() => {
         required: 'Questo campo è obbligatorio',
         minlength: (min) => `Minimo ${min} caratteri richiesti`,
         email: 'Inserisci un indirizzo email valido',
-        password_mismatch: 'Le password non corrispondono',
-        file_size: (sizeKB) => `File troppo grande (${sizeKB}KB). Massimo 500KB`,
-        file_type: 'Formato file non valido. Usa: jpg, jpeg, png, gif'
+        password_mismatch: 'Le password non corrispondono'
     };
-
-    // ========================================
-    // PRIVATE STATE
-    // ========================================
-
-    let debounceTimers = new Map();
 
     // ========================================
     // UTILITY FUNCTIONS
     // ========================================
 
     const utils = {
-        /**
-         * Debounce function to limit validation frequency
-         */
-        debounce(fn, delay, key) {
-            if (debounceTimers.has(key)) {
-                clearTimeout(debounceTimers.get(key));
-            }
-
-            const timer = setTimeout(fn, delay);
-            debounceTimers.set(key, timer);
-        },
-
         /**
          * Check if element is visible (for conditional validation)
          */
@@ -68,27 +46,15 @@ const FormsModule = (() => {
         },
 
         /**
-         * Get file extension from filename
-         */
-        getFileExtension(filename) {
-            return filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2).toLowerCase();
-        },
-
-        /**
-         * Format bytes to KB for display
-         */
-        formatBytes(bytes) {
-            return Math.round(bytes / 1024);
-        },
-
-        /**
-         * Show notification using global Notifications system
+         * Show notification using global Notifications system or SpottedApp
          */
         notify(message, type = 'info') {
-            if (window.Notifications && typeof window.Notifications[type] === 'function') {
-                window.Notifications[type](message);
-            } else {
-                // Fallback to console if Notifications not available
+            // Try showNotification function from notifications.js
+            if (typeof showNotification === 'function') {
+                showNotification(message, type);
+            }
+            // Fallback to console
+            else {
                 console.log(`[${type.toUpperCase()}] ${message}`);
             }
         }
@@ -396,6 +362,7 @@ const FormsModule = (() => {
 
         /**
          * Handle file selection
+         * NOW USES: SpottedApp.utils.validateImageFile() from main.js
          */
         handleFileChange(input) {
             const file = input.files[0];
@@ -409,13 +376,23 @@ const FormsModule = (() => {
             // Update file name display
             this.updateFileName(input, file.name);
 
-            // Validate file
-            const validation = this.validateFile(file);
+            // Validate file using SpottedApp utility
+            if (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.validateImageFile) {
+                const validation = window.SpottedApp.utils.validateImageFile(file);
 
-            if (!validation.valid) {
-                utils.notify(validation.message, 'error');
-                this.clearFileInput(input);
-                return;
+                if (!validation.valid) {
+                    utils.notify(validation.error, 'error');
+                    this.clearFileInput(input);
+                    return;
+                }
+            } else {
+                console.warn('SpottedApp.utils.validateImageFile not available, using basic validation');
+                // Basic fallback validation
+                if (file.size > 500000) {
+                    utils.notify('File troppo grande (max 500KB)', 'error');
+                    this.clearFileInput(input);
+                    return;
+                }
             }
 
             // Show preview
@@ -436,30 +413,6 @@ const FormsModule = (() => {
             if (labelText) {
                 labelText.textContent = fileName !== 'Nessun file selezionato' ? 'Cambia immagine' : 'Scegli un\'immagine';
             }
-        },
-
-        /**
-         * Validate file (size and type)
-         */
-        validateFile(file) {
-            // Check file size
-            if (file.size > CONFIG.FILE_MAX_SIZE) {
-                const sizeKB = utils.formatBytes(file.size);
-                return { valid: false, message: VALIDATION_MESSAGES.file_size(sizeKB) };
-            }
-
-            // Check file extension
-            const extension = utils.getFileExtension(file.name);
-            if (!CONFIG.ALLOWED_EXTENSIONS.includes(extension)) {
-                return { valid: false, message: VALIDATION_MESSAGES.file_type };
-            }
-
-            // Check MIME type
-            if (!CONFIG.ALLOWED_MIME_TYPES.includes(file.type)) {
-                return { valid: false, message: VALIDATION_MESSAGES.file_type };
-            }
-
-            return { valid: true };
         },
 
         /**
@@ -576,7 +529,7 @@ const FormsModule = (() => {
 
             forms.forEach(form => {
                 // Skip specific forms that have their own handlers
-                if (form.id === 'message-form' || form.id === 'comment-form') {
+                if (form.id === 'message-form' || form.id === 'comment-form' || form.id === 'segnalaForm') {
                     return;
                 }
 
@@ -586,6 +539,7 @@ const FormsModule = (() => {
 
         /**
          * Attach listeners to form
+         * NOW USES: SpottedApp.utils.debounce() from main.js
          */
         attachFormListeners(form) {
             // Get all validatable fields
@@ -604,16 +558,26 @@ const FormsModule = (() => {
                     }
                 });
 
-                // Clear error on input (debounced)
-                field.addEventListener('input', () => {
-                    utils.debounce(() => {
+                // Clear error on input (debounced using SpottedApp)
+                if (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.debounce) {
+                    const debouncedValidation = window.SpottedApp.utils.debounce(() => {
                         const result = validator.validateField(field);
 
                         if (result.valid) {
                             ui.clearError(field);
                         }
-                    }, CONFIG.DEBOUNCE_DELAY, field.id || field.name);
-                });
+                    }, 300);
+
+                    field.addEventListener('input', debouncedValidation);
+                } else {
+                    // Fallback without debounce
+                    field.addEventListener('input', () => {
+                        const result = validator.validateField(field);
+                        if (result.valid) {
+                            ui.clearError(field);
+                        }
+                    });
+                }
             });
 
             // Validate on submit
@@ -656,7 +620,12 @@ const FormsModule = (() => {
          * Initialize the forms module
          */
         init() {
-            console.log('Forms module initialized');
+            // Check if SpottedApp is available
+            if (!window.SpottedApp) {
+                console.warn('FormsModule: SpottedApp not loaded. Some features may be limited.');
+            }
+
+            console.log('📝 Forms module initialized');
 
             // Initialize all sub-modules
             formValidation.init();
