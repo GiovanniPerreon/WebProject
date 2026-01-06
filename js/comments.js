@@ -3,6 +3,17 @@
 /**
  * Comments Module
  * Handles AJAX comment submission without page reloads
+ *
+ * DEPENDENCIES:
+ * - main.js (SpottedApp) for utilities
+ * - notifications.js for toast messages
+ *
+ * Features:
+ * - AJAX comment submission
+ * - Real-time comment polling (5s interval)
+ * - XSS prevention (uses SpottedApp.utils.escapeHtml)
+ * - Smooth scrolling to new comments (uses SpottedApp.utils.scrollToElement)
+ * - Visual feedback with animations
  */
 
 const CommentsManager = {
@@ -15,7 +26,7 @@ const CommentsManager = {
      * Initialize the comments system
      */
     init() {
-        console.log('Comments Manager initialized');
+        console.log('💬 Comments Manager initialized');
         this.attachFormListener();
         this.initializePolling();
     },
@@ -62,7 +73,7 @@ const CommentsManager = {
         this.pollingInterval = setInterval(async () => {
             await this.checkForNewComments();
         }, this.pollingFrequency);
-        console.log('Comment polling started');
+        console.log('Comment polling started (5s interval)');
     },
 
     /**
@@ -128,9 +139,7 @@ const CommentsManager = {
 
         // Validate
         if (!testocommento) {
-            if (window.Notifications) {
-                Notifications.error('Il commento non può essere vuoto');
-            }
+            this.notify('Il commento non può essere vuoto', 'error');
             return;
         }
 
@@ -161,26 +170,27 @@ const CommentsManager = {
                 // Update lastCommentId to prevent duplicate from polling
                 this.lastCommentId = data.comment.idcommento;
 
-                // Scroll to the new comment
-                const newComment = document.getElementById(`comment-${data.comment.idcommento}`);
-                if (newComment) {
-                    newComment.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                // Scroll to the new comment using SpottedApp utility
+                const newCommentId = `comment-${data.comment.idcommento}`;
+                if (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.scrollToElement) {
+                    window.SpottedApp.utils.scrollToElement(`#${newCommentId}`, 20);
+                } else {
+                    // Fallback to basic scrollIntoView
+                    const newComment = document.getElementById(newCommentId);
+                    if (newComment) {
+                        newComment.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
                 }
+
+                // Show success notification
+                this.notify('Commento aggiunto!', 'success');
             } else {
                 // Show error notification
-                if (window.Notifications) {
-                    Notifications.error(data.error || 'Errore nell\'invio del commento');
-                } else {
-                    alert(data.error || 'Errore nell\'invio del commento');
-                }
+                this.notify(data.error || 'Errore nell\'invio del commento', 'error');
             }
         } catch (err) {
             console.error('Comment submission error:', err);
-            if (window.Notifications) {
-                Notifications.error('Errore di rete. Riprova.');
-            } else {
-                alert('Errore di rete. Riprova.');
-            }
+            this.notify('Errore di rete. Riprova.', 'error');
         } finally {
             // Re-enable button
             submitButton.disabled = false;
@@ -235,13 +245,20 @@ const CommentsManager = {
 
     /**
      * Render comment HTML
+     * NOW USES: SpottedApp.utils.escapeHtml() for XSS prevention
      */
     renderComment(comment, isAdmin, currentUserId) {
         const commenterId = comment.idutente || null;
-        const commenterName = this.escapeHtml(comment.nomeautore);
+
+        // Use SpottedApp escapeHtml if available, otherwise use fallback
+        const escapeHtml = (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.escapeHtml)
+            ? window.SpottedApp.utils.escapeHtml
+            : this.escapeHtmlFallback;
+
+        const commenterName = escapeHtml(comment.nomeautore);
         const commenterIsAdmin = comment.amministratore ? true : false;
         const commenterBadge = commenterIsAdmin ? ' <span class="admin-badge" title="Amministratore">👑</span>' : '';
-        const commentText = this.escapeHtml(comment.testocommento);
+        const commentText = escapeHtml(comment.testocommento);
         const commentDate = comment.datacommento;
 
         let authorHTML = '';
@@ -270,9 +287,24 @@ const CommentsManager = {
     },
 
     /**
-     * Escape HTML to prevent XSS
+     * Show notification
+     * Uses Notifications from notifications.js if available
      */
-    escapeHtml(text) {
+    notify(message, type = 'info') {
+        if (window.Notifications && typeof window.Notifications[type] === 'function') {
+            window.Notifications[type](message);
+        } else if (window.Notifications && typeof window.Notifications.show === 'function') {
+            window.Notifications.show(message, type);
+        } else {
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+    },
+
+    /**
+     * Fallback escapeHtml if SpottedApp not available
+     * DEPRECATED: Prefer SpottedApp.utils.escapeHtml
+     */
+    escapeHtmlFallback(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;

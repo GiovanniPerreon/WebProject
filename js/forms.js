@@ -46,15 +46,15 @@ const FormsModule = (() => {
         },
 
         /**
-         * Show notification using global Notifications system or SpottedApp
+         * Show notification using global Notifications system
          */
         notify(message, type = 'info') {
-            // Try showNotification function from notifications.js
-            if (typeof showNotification === 'function') {
-                showNotification(message, type);
-            }
-            // Fallback to console
-            else {
+            // Use Notifications from notifications.js
+            if (window.Notifications && typeof window.Notifications[type] === 'function') {
+                window.Notifications[type](message);
+            } else if (window.Notifications && typeof window.Notifications.show === 'function') {
+                window.Notifications.show(message, type);
+            } else {
                 console.log(`[${type.toUpperCase()}] ${message}`);
             }
         }

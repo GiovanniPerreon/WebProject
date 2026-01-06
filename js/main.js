@@ -303,8 +303,14 @@ const SpottedApp = (function() {
                     })
                     .then(res => res.json())
                     .then(data => {
-                        if (typeof showNotification === 'function') {
-                            showNotification(data.message, data.success ? 'success' : 'error');
+                        // Use Notifications system
+                        if (window.Notifications) {
+                            const type = data.success ? 'success' : 'error';
+                            if (typeof window.Notifications[type] === 'function') {
+                                window.Notifications[type](data.message);
+                            } else {
+                                window.Notifications.show(data.message, type);
+                            }
                         } else {
                             alert(data.message);
                         }
@@ -315,8 +321,8 @@ const SpottedApp = (function() {
                     })
                     .catch(err => {
                         console.error('Error submitting report:', err);
-                        if (typeof showNotification === 'function') {
-                            showNotification('Errore nell\'invio della segnalazione', 'error');
+                        if (window.Notifications && typeof window.Notifications.error === 'function') {
+                            window.Notifications.error('Errore nell\'invio della segnalazione');
                         } else {
                             alert('Errore nell\'invio della segnalazione');
                         }
