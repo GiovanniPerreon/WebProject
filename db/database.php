@@ -300,6 +300,28 @@ class DatabaseHelper{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    // Get posts without tags (with anonymous support)
+    public function getPostsWithoutTags($n=-1){
+        $query = "SELECT p.idpost, p.titolopost, p.imgpost, p.anteprimapost, p.datapost, p.likes, p.anonimo, p.utente as idutente, p.pinned,
+                  CASE WHEN p.anonimo = 1 THEN 'Anonimo' ELSE u.nome END as nome,
+                  u.amministratore
+                  FROM post p
+                  JOIN utente u ON p.utente = u.idutente
+                  LEFT JOIN post_tag pt ON pt.post = p.idpost
+                  WHERE pt.post IS NULL
+                  ORDER BY p.pinned DESC, p.datapost DESC";
+        if($n > 0){
+            $query .= " LIMIT ?";
+        }
+        $stmt = $this->db->prepare($query);
+        if($n > 0){
+            $stmt->bind_param('i', $n);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     // Check if user has liked a post
     public function hasUserLikedPost($idutente, $idpost){
         $query = "SELECT COUNT(*) as count FROM user_likes WHERE utente = ? AND post = ?";

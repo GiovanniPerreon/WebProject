@@ -53,6 +53,7 @@
                 ?>
                 <li><a href="tag.php?id=<?php echo $tag["idtag"]; ?>"><?php echo $tag["nometag"]; ?></a></li>
                 <?php endforeach; ?>
+                <li><a href="senza-tag.php">Senza Tag</a></li>
             </ul>
         </section>
     </aside>
