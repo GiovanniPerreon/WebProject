@@ -4,6 +4,14 @@
  * Messages Module
  * Handles real-time messaging without page reloads
  * Features: AJAX conversation switching, message sending, auto-refresh
+ *
+ * DEPENDENCIES:
+ * - main.js (SpottedApp) for utilities
+ * - notifications.js for toast messages
+ *
+ * INTEGRATIONS:
+ * - XSS prevention (uses SpottedApp.utils.escapeHtml)
+ * - Smooth scrolling (uses SpottedApp.utils.scrollToElement)
  */
 
 const MessagesManager = {
@@ -21,6 +29,11 @@ const MessagesManager = {
      */
     init() {
         console.log('Messages Manager initialized');
+
+        // Check if SpottedApp is available
+        if (!window.SpottedApp) {
+            console.warn('MessagesManager: SpottedApp not loaded. Using fallback utilities.');
+        }
 
         // Attach event listeners
         this.attachConversationListeners();
@@ -131,6 +144,7 @@ const MessagesManager = {
 
     /**
      * Render conversation in chat area
+     * NOW USES: SpottedApp.utils.escapeHtml() for XSS prevention
      */
     renderConversation(user, messages) {
         const chatArea = document.querySelector('.chat-area');
@@ -144,15 +158,20 @@ const MessagesManager = {
             this.lastMessageId = Math.max(...messages.map(m => m.idmessaggio));
         }
 
+        // Use SpottedApp escapeHtml if available, otherwise use fallback
+        const escapeHtml = (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.escapeHtml)
+            ? window.SpottedApp.utils.escapeHtml
+            : this.escapeHtmlFallback;
+
         chatArea.innerHTML = `
             <!-- Chat Header -->
             <div class="chat-header">
                 <img src="./upload/${user.imgprofilo}"
-                     alt="${this.escapeHtml(user.nome)}"
+                     alt="${escapeHtml(user.nome)}"
                      class="chat-avatar">
                 <div>
-                    <strong>${this.escapeHtml(user.nome)}</strong>
-                    <small>@${this.escapeHtml(user.username)}</small>
+                    <strong>${escapeHtml(user.nome)}</strong>
+                    <small>@${escapeHtml(user.username)}</small>
                 </div>
             </div>
 
@@ -179,15 +198,21 @@ const MessagesManager = {
 
     /**
      * Render a single message
+     * NOW USES: SpottedApp.utils.escapeHtml() for XSS prevention
      */
     renderMessage(msg, currentUserId) {
         const isSent = msg.mittente == currentUserId;
         const time = this.formatTime(msg.datamessaggio);
 
+        // Use SpottedApp escapeHtml if available, otherwise use fallback
+        const escapeHtml = (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.escapeHtml)
+            ? window.SpottedApp.utils.escapeHtml
+            : this.escapeHtmlFallback;
+
         return `
             <div class="message ${isSent ? 'sent' : 'received'}" data-message-id="${msg.idmessaggio}">
                 <div class="message-content">
-                    <p>${this.escapeHtml(msg.testomessaggio).replace(/\n/g, '<br>')}</p>
+                    <p>${escapeHtml(msg.testomessaggio).replace(/\n/g, '<br>')}</p>
                     <small class="message-timestamp">${time}</small>
                 </div>
             </div>
@@ -249,6 +274,7 @@ const MessagesManager = {
 
     /**
      * Add optimistic message (shown immediately before server confirms)
+     * NOW USES: SpottedApp.utils.escapeHtml() for XSS prevention
      */
     addOptimisticMessage(text) {
         const messagesBox = document.getElementById('messages-box');
@@ -257,10 +283,15 @@ const MessagesManager = {
         const now = new Date();
         const time = now.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
 
+        // Use SpottedApp escapeHtml if available, otherwise use fallback
+        const escapeHtml = (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.escapeHtml)
+            ? window.SpottedApp.utils.escapeHtml
+            : this.escapeHtmlFallback;
+
         const messageHtml = `
             <div class="message sent optimistic" data-optimistic="true">
                 <div class="message-content">
-                    <p>${this.escapeHtml(text).replace(/\n/g, '<br>')}</p>
+                    <p>${escapeHtml(text).replace(/\n/g, '<br>')}</p>
                     <small class="message-timestamp">${time}</small>
                 </div>
             </div>
@@ -497,11 +528,25 @@ const MessagesManager = {
 
     /**
      * Scroll messages box to bottom
+     * NOW USES: SpottedApp.utils.scrollToElement() for smooth scrolling
      */
     scrollToBottom() {
         setTimeout(() => {
             const messagesBox = document.getElementById('messages-box');
-            if (messagesBox) {
+            if (!messagesBox) return;
+
+            // Use SpottedApp scrollToElement if available
+            if (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.scrollToElement) {
+                // Get the last message element
+                const lastMessage = messagesBox.lastElementChild;
+                if (lastMessage) {
+                    window.SpottedApp.utils.scrollToElement(lastMessage, 0);
+                } else {
+                    // Fallback: scroll container to bottom
+                    messagesBox.scrollTop = messagesBox.scrollHeight;
+                }
+            } else {
+                // Fallback: basic scroll to bottom
                 messagesBox.scrollTop = messagesBox.scrollHeight;
             }
         }, 100);
@@ -516,9 +561,10 @@ const MessagesManager = {
     },
 
     /**
-     * Escape HTML to prevent XSS
+     * Fallback escapeHtml if SpottedApp not available
+     * DEPRECATED: Prefer SpottedApp.utils.escapeHtml
      */
-    escapeHtml(text) {
+    escapeHtmlFallback(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;

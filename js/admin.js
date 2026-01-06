@@ -3,6 +3,14 @@
 /**
  * Admin Panel Module
  * Handles admin operations with modern UX (toast notifications instead of alerts)
+ *
+ * DEPENDENCIES:
+ * - notifications.js for toast messages
+ * - main.js (SpottedApp) for timing constants (optional)
+ *
+ * INTEGRATIONS:
+ * - Uses SpottedApp.config.animationDuration for consistent animation timing
+ * - Uses SpottedApp.config.toastDuration for redirect delays
  */
 
 const AdminPanel = {
@@ -11,6 +19,11 @@ const AdminPanel = {
      */
     init() {
         console.log('Admin Panel initialized');
+
+        // Check if SpottedApp is available for timing constants
+        if (!window.SpottedApp || !window.SpottedApp.config) {
+            console.warn('AdminPanel: SpottedApp not loaded. Using fallback timing values.');
+        }
 
         this.initDeletePostButtons();
         this.initDeleteCommentButtons();
@@ -65,18 +78,26 @@ const AdminPanel = {
 
                 if (isInAdminPanel && parentItem) {
                     // In admin panel: Remove item from DOM with animation
+                    const animDuration = (window.SpottedApp && window.SpottedApp.config)
+                        ? window.SpottedApp.config.animationDuration
+                        : 200;
+
                     parentItem.style.opacity = '0';
                     parentItem.style.transform = 'translateX(-20px)';
-                    parentItem.style.transition = 'all 0.3s ease';
+                    parentItem.style.transition = `all ${animDuration}ms ease`;
 
                     setTimeout(() => {
                         parentItem.remove();
-                    }, 300);
+                    }, animDuration);
                 } else {
                     // On post page: Redirect to homepage after short delay
+                    const toastDuration = (window.SpottedApp && window.SpottedApp.config)
+                        ? window.SpottedApp.config.toastDuration
+                        : 3000;
+
                     setTimeout(() => {
                         window.location.href = 'index.php';
-                    }, 1000);
+                    }, toastDuration);
                 }
             } else {
                 Notifications.error(data.message || 'Errore durante l\'eliminazione del post');
@@ -135,16 +156,24 @@ const AdminPanel = {
 
                 if (isInAdminPanel && parentItem) {
                     // In admin panel: Remove item from DOM with animation
+                    const animDuration = (window.SpottedApp && window.SpottedApp.config)
+                        ? window.SpottedApp.config.animationDuration
+                        : 200;
+
                     parentItem.style.opacity = '0';
                     parentItem.style.transform = 'translateX(-20px)';
-                    parentItem.style.transition = 'all 0.3s ease';
+                    parentItem.style.transition = `all ${animDuration}ms ease`;
 
                     setTimeout(() => {
                         parentItem.remove();
-                    }, 300);
+                    }, animDuration);
                 } else {
                     // On post page: Reload to show updated comments
-                    setTimeout(() => location.reload(), 1000);
+                    const toastDuration = (window.SpottedApp && window.SpottedApp.config)
+                        ? window.SpottedApp.config.toastDuration
+                        : 3000;
+
+                    setTimeout(() => location.reload(), toastDuration);
                 }
             } else {
                 Notifications.error(data.message || 'Errore durante l\'eliminazione del commento');
@@ -207,8 +236,12 @@ const AdminPanel = {
                 Notifications.success(data.message || 'Tag aggiunto con successo');
 
                 // Clear input and reload after short delay
+                const toastDuration = (window.SpottedApp && window.SpottedApp.config)
+                    ? window.SpottedApp.config.toastDuration
+                    : 3000;
+
                 input.value = '';
-                setTimeout(() => location.reload(), 1000);
+                setTimeout(() => location.reload(), toastDuration);
             } else {
                 Notifications.error(data.message || 'Errore durante l\'aggiunta del tag');
                 submitBtn.disabled = false;
@@ -314,13 +347,17 @@ const AdminPanel = {
                 Notifications.success(data.message || 'Tag eliminato con successo');
 
                 // Remove tag item from DOM with animation
+                const animDuration = (window.SpottedApp && window.SpottedApp.config)
+                    ? window.SpottedApp.config.animationDuration
+                    : 200;
+
                 tagItem.style.opacity = '0';
                 tagItem.style.transform = 'translateX(-20px)';
-                tagItem.style.transition = 'all 0.3s ease';
+                tagItem.style.transition = `all ${animDuration}ms ease`;
 
                 setTimeout(() => {
                     tagItem.remove();
-                }, 300);
+                }, animDuration);
             } else {
                 Notifications.error(data.message || 'Errore durante l\'eliminazione del tag');
                 button.disabled = false;
@@ -461,7 +498,11 @@ const AdminPanel = {
                 Notifications.success(data.message || 'Operazione completata con successo');
 
                 // Reload page after short delay to show notification
-                setTimeout(() => location.reload(), 1000);
+                const toastDuration = (window.SpottedApp && window.SpottedApp.config)
+                    ? window.SpottedApp.config.toastDuration
+                    : 3000;
+
+                setTimeout(() => location.reload(), toastDuration);
             } else {
                 Notifications.error(data.message || 'Errore durante l\'operazione');
                 button.disabled = false;
