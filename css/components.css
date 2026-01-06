@@ -944,3 +944,69 @@ main > article > section > form button[type="submit"]:hover {
         transform: translateY(0);
     }
 }
+
+/* ==================== TAG FILTER & LOADING STATES ==================== */
+
+/* Active tag in sidebar */
+aside a.active {
+    background-color: var(--accent);
+    color: var(--bg-primary);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    padding: var(--space-xs) var(--space-sm);
+    margin-left: calc(var(--space-sm) * -1);
+}
+
+/* Loading state for main content */
+main.loading {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+    min-height: 300px;
+}
+
+main.loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    z-index: 10;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* No posts message */
+.no-posts {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Post preview fade-in animation */
+/* Matches SpottedApp.config.animationDuration (200ms) */
+.post-preview {
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

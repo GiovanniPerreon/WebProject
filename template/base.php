@@ -99,6 +99,8 @@
     <script src="js/admin.js"></script>
     <!-- Form Validation & Enhancements -->
     <script src="js/forms.js"></script>
+    <!-- Tag Filter (AJAX filtering on homepage and tag pages) -->
+    <script src="js/tag-filter.js"></script>
     <!-- Message Polling (updates badge on all pages when logged in) -->
     <script src="js/message-polling.js"></script>
     <!-- Comment Polling (notifies post authors of new comments globally) -->
