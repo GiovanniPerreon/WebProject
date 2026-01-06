@@ -480,6 +480,116 @@ form input[type="submit"]:hover {
     font-style: italic;
 }
 
+/* Form Validation Styles */
+input.invalid,
+textarea.invalid {
+    border-color: var(--accent-red) !important;
+    box-shadow: 0 0 0 3px rgba(230, 126, 128, 0.1) !important;
+}
+
+.field-error {
+    display: block;
+    color: var(--accent-red);
+    font-size: var(--text-xs);
+    margin-top: var(--space-xs);
+    font-weight: 600;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.strength-bar {
+    height: 8px;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    margin-bottom: var(--space-xs);
+}
+
+.strength-bar-fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-bar-fill.weak {
+    background-color: var(--accent-red);
+}
+
+.strength-bar-fill.medium {
+    background-color: var(--accent-yellow);
+}
+
+.strength-bar-fill.strong {
+    background-color: var(--accent-green);
+}
+
+.strength-text {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.strength-text {
+    color: var(--text-muted);
+}
+
+/* Upload Preview */
+.upload-preview {
+    position: relative;
+    margin-top: var(--space-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background-color: var(--bg-tertiary);
+    max-width: 400px;
+}
+
+.upload-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.upload-preview .remove-preview {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: var(--accent-red);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.upload-preview .remove-preview:hover {
+    background-color: #c94a4a;
+    transform: scale(1.1);
+}
+
+/* Drag and Drop States */
+.file-input-label.drag-over {
+    background-color: var(--accent-green-hover);
+    border: 2px dashed var(--accent-green);
+    transform: scale(1.05);
+}
+
 /* ==================== COMMENTS ==================== */
 main > article > section {
     background-color: var(--bg-tertiary);

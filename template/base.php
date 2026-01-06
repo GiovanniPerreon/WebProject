@@ -147,6 +147,8 @@
     <!-- Toast Notifications & Post Actions -->
     <script src="js/notifications.js"></script>
     <script src="js/post-actions.js"></script>
+    <!-- Form Validation & Enhancements -->
+    <script src="js/forms.js"></script>
     <!-- Message Polling (updates badge on all pages when logged in) -->
     <script src="js/message-polling.js"></script>
     <!-- Comment Polling (notifies post authors of new comments globally) -->

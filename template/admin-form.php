@@ -71,11 +71,3 @@
         <button type="submit"><?php echo getAction($templateParams["azione"]); ?></button>
     </fieldset>
 </form>
-
-<script>
-document.getElementById('imgpost').addEventListener('change', function(e) {
-    const fileName = e.target.files[0] ? e.target.files[0].name : 'Nessun file selezionato';
-    document.getElementById('file-name').textContent = fileName;
-    document.querySelector('.file-input-label .file-text').textContent = e.target.files[0] ? 'Cambia immagine' : 'Scegli un\'immagine';
-});
-</script>
