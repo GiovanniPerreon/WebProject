@@ -16,7 +16,6 @@ if(!$profileUser){
 }
 
 $templateParams["titolo"] = "Spotted Unibo Cesena - Profilo di " . $profileUser["nome"];
-$templateParams["js"] = array("js/main.js");
 
 $isOwnProfile = isUserLoggedIn() && $_SESSION["idutente"] == $profileUserId;
 
