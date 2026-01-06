@@ -122,10 +122,10 @@ INSERT INTO post (titolopost, testopost, datapost, anteprimapost, imgpost, pinne
 '2025-12-27', 'Affitto monolocale arredato in centro Cesena, 5 min dalla stazione. 400€/mese...', '', 0, 16, 0, 4),
 
 ('Cercasi insegnante di inglese', 'Sto cercando un insegnante di inglese per lezioni private a domicilio. Contattatemi se interessati!', 
-'2025-12-18', 'Sto cercando un insegnante di inglese per lezioni private a domicilio...', 'default.jpg', 0, 5, 0, 1),
+'2025-12-18', 'Sto cercando un insegnante di inglese per lezioni private a domicilio...', 'default-avatar.png', 0, 5, 0, 1),
 
 ('Sciarpa persa', 'Ho perso una sciarpa rossa con motivi floreali. Se qualcuno la trovasse, per favore contattatemi.', 
-'2025-12-18', 'Ho perso una sciarpa rossa con motivi floreali. Se qualcuno la trovasse...', 'frog.jpg', 0, 3, 0, 2);
+'2025-12-18', 'Ho perso una sciarpa rossa con motivi floreali. Se qualcuno la trovasse...', 'sciarpa.png', 0, 3, 0, 2);
 
 INSERT INTO user_likes (utente, post) VALUES
 (1, 1),
