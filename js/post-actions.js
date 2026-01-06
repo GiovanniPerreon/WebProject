@@ -3,37 +3,63 @@
 /**
  * Post Actions Module
  * Handles share, DM request, and pin functionality
+ *
+ * DEPENDENCIES:
+ * - main.js (SpottedApp) for copyToClipboard utility
+ * - notifications.js for toast messages
  */
 
 const PostActions = {
     /**
      * Share a post by copying its link to clipboard
+     * NOW USES: SpottedApp.utils.copyToClipboard()
      * @param {number} postId - The ID of the post to share
      */
     async sharePost(postId) {
         const url = `${window.location.origin}${window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'))}/post.php?id=${postId}`;
 
-        try {
-            // Try using modern Clipboard API
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                await navigator.clipboard.writeText(url);
+        // Use SpottedApp utility if available
+        if (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.copyToClipboard) {
+            try {
+                await window.SpottedApp.utils.copyToClipboard(url);
                 Notifications.success('Link copiato negli appunti!');
-            } else {
-                // Fallback for older browsers
-                this.fallbackCopyToClipboard(url);
+            } catch (err) {
+                console.error('Clipboard error:', err);
+                Notifications.error('Impossibile copiare il link');
             }
-        } catch (err) {
-            console.error('Clipboard error:', err);
-            // Try fallback method
+        } else {
+            // Fallback if SpottedApp not available
+            console.warn('SpottedApp.utils.copyToClipboard not available, using fallback');
             this.fallbackCopyToClipboard(url);
         }
     },
 
     /**
      * Fallback method to copy text to clipboard
+     * DEPRECATED: Prefer SpottedApp.utils.copyToClipboard()
      * @param {string} text - Text to copy
      */
     fallbackCopyToClipboard(text) {
+        // Try modern API first
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    Notifications.success('Link copiato negli appunti!');
+                })
+                .catch(err => {
+                    console.error('Clipboard API failed:', err);
+                    this.execCommandFallback(text);
+                });
+        } else {
+            this.execCommandFallback(text);
+        }
+    },
+
+    /**
+     * execCommand fallback for very old browsers
+     * @param {string} text - Text to copy
+     */
+    execCommandFallback(text) {
         const textArea = document.createElement('textarea');
         textArea.value = text;
         textArea.style.position = 'fixed';
@@ -51,7 +77,7 @@ const PostActions = {
                 Notifications.error('Impossibile copiare il link');
             }
         } catch (err) {
-            console.error('Fallback copy failed:', err);
+            console.error('execCommand copy failed:', err);
             Notifications.error('Impossibile copiare il link');
         }
 
@@ -121,6 +147,8 @@ const PostActions = {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('📤 Post Actions initialized');
+
     // Attach event listeners to share buttons
     document.querySelectorAll('.condividi-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
