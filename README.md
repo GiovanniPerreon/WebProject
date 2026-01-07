@@ -12,14 +12,14 @@ A forum-style web platform for University of Bologna (Cesena Campus) students to
 
 ## Technology Stack
 
-- **Frontend:** HTML5, CSS3, JavaScript (ES6+)
-- **Backend:** PHP 7.4+, MySQL 5.7+
+- **Frontend:** HTML5, CSS3, JavaScript
+- **Backend:** PHP, MySQL
 - **Server:** Apache (XAMPP)
 
 ## Installation
 
 1. **Clone repository:**
-   ```bash
+   ```
    git clone https://github.com/GiovanniPerreon/WebProject.git
    ```
 
@@ -43,7 +43,3 @@ WebProject/
 ├── utils/            # Helper functions
 └── *.php             # Controllers and processors
 ```
-
-## License
-
-Academic project - University of Bologna © 2024
