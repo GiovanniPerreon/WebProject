@@ -1104,7 +1104,7 @@ table th {
 
 .contact-intro {
     text-align: center;
-    color: var(--text-muted);
+    color: var(--text-primary);
     margin-bottom: var(--space-2xl);
     font-size: var(--text-base);
 }
