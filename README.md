@@ -2,6 +2,10 @@
 
 A forum-style web platform for University of Bologna (Cesena Campus) students to share posts, discussions, and campus-related content.
 
+## Design Mockup
+
+View the interactive design mockup: [Figma Prototype](https://curry-chisel-71836014.figma.site)
+
 ## Features
 
 - Post creation with tags, images, and anonymous posting
