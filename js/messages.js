@@ -623,10 +623,11 @@ const MessagesManager = {
      * Update a single conversation item in the sidebar
      */
     updateConversationItem(conv) {
-        const conversationItem = document.querySelector(`.conversation-item[href*="user=${conv.idutente}"]`);
+        let conversationItem = document.querySelector(`.conversation-item[href*="user=${conv.idutente}"]`);
 
         if (!conversationItem) {
-            // Conversation doesn't exist in sidebar yet - could add it dynamically here
+            // Conversation doesn't exist in sidebar yet - create it dynamically
+            this.createNewConversationItem(conv);
             return;
         }
 
@@ -653,6 +654,80 @@ const MessagesManager = {
 
         // Update unread badge
         this.updateUnreadBadge(conv.idutente, parseInt(conv.non_letti) || 0);
+    },
+
+    /**
+     * Create a new conversation item in the sidebar when someone new messages you
+     */
+    createNewConversationItem(conv) {
+        const conversationsList = document.querySelector('.conversations-list');
+        if (!conversationsList) return;
+
+        // Check for empty message placeholder
+        const emptyMessage = conversationsList.querySelector('.empty-message');
+        if (emptyMessage) {
+            emptyMessage.remove();
+        }
+
+        // Use SpottedApp escapeHtml if available, otherwise use fallback
+        const escapeHtml = (window.SpottedApp && window.SpottedApp.utils && window.SpottedApp.utils.escapeHtml)
+            ? window.SpottedApp.utils.escapeHtml
+            : this.escapeHtmlFallback;
+
+        // Format the timestamp
+        const date = new Date(conv.data_ultimo_messaggio);
+        const formattedTime = date.toLocaleDateString('it-IT', {
+            day: '2-digit',
+            month: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Truncate last message
+        const truncatedMessage = conv.ultimo_messaggio.length > 50
+            ? conv.ultimo_messaggio.substring(0, 50) + '...'
+            : conv.ultimo_messaggio;
+
+        // Create the conversation item HTML
+        const conversationHtml = `
+            <a href="messaggi.php?user=${conv.idutente}" class="conversation-item">
+                <img src="./upload/${escapeHtml(conv.imgprofilo)}" alt="${escapeHtml(conv.nome)}" class="conversation-avatar">
+                <div class="conversation-info">
+                    <div class="conversation-header">
+                        <strong class="conversation-name">${escapeHtml(conv.nome)}</strong>
+                        <small class="message-time">${formattedTime}</small>
+                    </div>
+                    <div class="conversation-footer">
+                        <p class="last-message">${escapeHtml(truncatedMessage)}</p>
+                        ${parseInt(conv.non_letti) > 0 ? `<span class="unread-badge">${conv.non_letti}</span>` : ''}
+                    </div>
+                </div>
+            </a>
+        `;
+
+        // Insert at the top of the list (after h3)
+        const heading = conversationsList.querySelector('h3');
+        if (heading && heading.nextElementSibling) {
+            heading.nextElementSibling.insertAdjacentHTML('beforebegin', conversationHtml);
+        } else if (heading) {
+            heading.insertAdjacentHTML('afterend', conversationHtml);
+        } else {
+            conversationsList.insertAdjacentHTML('beforeend', conversationHtml);
+        }
+
+        // Attach click listener to the new conversation item
+        const newItem = conversationsList.querySelector(`.conversation-item[href*="user=${conv.idutente}"]`);
+        if (newItem) {
+            newItem.addEventListener('click', (e) => {
+                e.preventDefault();
+                const userId = this.extractUserIdFromUrl(newItem.href);
+                if (userId) {
+                    this.loadConversation(userId);
+                }
+            });
+        }
+
+        console.log('New conversation added to sidebar:', conv.nome);
     }
 };
 
