@@ -327,11 +327,14 @@ const TagFilter = {
         });
 
         if (tagId !== null) {
-            // Add active class to selected tag
-            const activeLink = document.querySelector(`aside a[href*="tag.php?id=${tagId}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-            }
+            // Add active class to selected tag - usa una corrispondenza esatta
+            document.querySelectorAll('aside a[href*="tag.php"]').forEach(link => {
+                const url = new URL(link.href);
+                const linkTagId = parseInt(url.searchParams.get('id'));
+                if (linkTagId === tagId) {
+                    link.classList.add('active');
+                }
+            });
         }
     },
 

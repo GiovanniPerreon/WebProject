@@ -6,6 +6,9 @@
  */
 
 const Notifications = {
+    currentTimeout: null,
+    currentToast: null,
+
     /**
      * Show a toast notification
      * @param {string} message - The message to display
@@ -13,20 +16,36 @@ const Notifications = {
      * @param {number} duration - How long to show the toast (ms), default 3000
      */
     show(message, type = 'info', duration = 3000) {
+        // Cancella il timeout precedente se esiste
+        if (this.currentTimeout) {
+            clearTimeout(this.currentTimeout);
+        }
+
+        // Rimuovi il toast precedente immediatamente se esiste
+        if (this.currentToast && this.currentToast.parentNode) {
+            this.currentToast.parentNode.removeChild(this.currentToast);
+        }
+
         // Create toast element
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         toast.textContent = message;
 
+        // Salva il riferimento al toast corrente
+        this.currentToast = toast;
+
         // Add to document
         document.body.appendChild(toast);
 
         // Auto-remove after duration
-        setTimeout(() => {
+        this.currentTimeout = setTimeout(() => {
             toast.style.animation = 'slideOut 0.3s ease';
             setTimeout(() => {
                 if (toast.parentNode) {
                     toast.parentNode.removeChild(toast);
+                }
+                if (this.currentToast === toast) {
+                    this.currentToast = null;
                 }
             }, 300);
         }, duration);

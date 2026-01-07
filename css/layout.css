@@ -111,12 +111,11 @@ aside > section > ul > li > a {
     font-weight: 600;
     display: block;
     padding: var(--space-xs) 0;
-    transition: all var(--transition-base);
+    transition: padding-left var(--transition-base);
 }
 
-aside > section > ul > li > a:hover {
-    color: var(--accent-green-hover);
-    padding-left: var(--space-sm);
+aside > section > ul > li > a:hover:not(.active) {
+    /* Nessun cambio di colore in hover, eccetto per elementi attivi */
 }
 
 /* ==================== RESPONSIVE DESIGN - MOBILE FIRST ==================== */

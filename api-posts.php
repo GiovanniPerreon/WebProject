@@ -14,17 +14,24 @@ if ($action === 'getByTag') {
     $idtag = isset($_GET['idtag']) ? intval($_GET['idtag']) : -1;
 
     try {
-        // Fetch posts by tag
-        $posts = $dbh->getPostsByTag($idtag);
-
-        // Get tag name for the response
-        $tagName = '';
-        if ($idtag > 0) {
-            $tags = $dbh->getTags();
-            foreach ($tags as $tag) {
-                if ($tag['idtag'] == $idtag) {
-                    $tagName = $tag['nometag'];
-                    break;
+        // Fetch posts by tag or without tags
+        if ($idtag == 0) {
+            // Get posts without tags
+            $posts = $dbh->getPostsWithoutTags(-1);
+            $tagName = 'Senza Tag';
+        } else {
+            // Get posts by specific tag
+            $posts = $dbh->getPostsByTag($idtag);
+            
+            // Get tag name for the response
+            $tagName = '';
+            if ($idtag > 0) {
+                $tags = $dbh->getTags();
+                foreach ($tags as $tag) {
+                    if ($tag['idtag'] == $idtag) {
+                        $tagName = $tag['nometag'];
+                        break;
+                    }
                 }
             }
         }

@@ -948,13 +948,12 @@ main > article > section > form button[type="submit"]:hover {
 /* ==================== TAG FILTER & LOADING STATES ==================== */
 
 /* Active tag in sidebar */
-aside a.active {
-    background-color: var(--accent);
-    color: var(--bg-primary);
+aside a.active,
+aside a.active:hover {
+    color: var(--accent-green);
     font-weight: 600;
-    border-radius: var(--radius-sm);
-    padding: var(--space-xs) var(--space-sm);
-    margin-left: calc(var(--space-sm) * -1);
+    padding: var(--space-xs) 0;
+    padding-left: var(--space-sm);
 }
 
 /* Loading state for main content */
