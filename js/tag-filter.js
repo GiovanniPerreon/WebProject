@@ -160,9 +160,6 @@ const TagFilter = {
 
                 // Clear active tag
                 this.updateActiveTag(null);
-
-                // Show notification
-                Notifications.info(`Visualizzazione tutti i post (${data.count})`);
             } else {
                 Notifications.error(data.error || 'Errore nel caricamento dei post');
                 this.hideLoadingState();

@@ -34,7 +34,7 @@ INSERT INTO tag (nometag) VALUES
 
 -- ==================== POST (60 posts) ====================
 INSERT INTO post (titolopost, testopost, datapost, anteprimapost, imgpost, pinned, likes, anonimo, utente) VALUES
--- Dicembre 2025
+-- Post 1-10
 ('Cercasi coinquilino zona campus', 'Ciao a tutti! Cerco un coinquilino per un appartamento in zona campus, a 5 minuti a piedi dalla facoltà di Ingegneria. Stanza singola, 280€ al mese spese incluse. L''appartamento è già arredato e ha una bella cucina. Disponibile da febbraio.', '2025-12-01', 'Cerco un coinquilino per un appartamento in zona campus...', '', 0, 12, 0, 3),
 ('Vendo libri Analisi 1 e Fisica', 'Vendo i seguenti libri in ottime condizioni: - Analisi Matematica 1 (Bramanti-Pagani-Salsa) 25€ - Fisica 1 (Mazzoldi) 20€ - Elementi di Algebra Lineare 15€. Prezzo trattabile se presi insieme.', '2025-12-02', 'Vendo libri in ottime condizioni: Analisi Matematica 1, Fisica 1...', '', 0, 8, 0, 4),
 ('Gruppo studio Basi di Dati', 'Sto cercando persone per formare un gruppo studio per l''esame di Basi di Dati. L''idea è di trovarci 2-3 volte a settimana in biblioteca per fare esercizi insieme.', '2025-12-03', 'Cerco persone per gruppo studio Basi di Dati...', '', 0, 22, 0, 6),
@@ -119,7 +119,7 @@ INSERT INTO post_tag (post, tag) VALUES
 -- Post 41-50
 (38, 5), (39, 7), (40, 2), (41, 9), (42, 12), (43, 12), (44, 1), (45, 12), (46, 4), (47, 12),
 -- Post 51-60
-(48, 10), (49, 6), (50, 4), (51, 1), (52, 10), (53, 4), (54, 4), (55, 1), (56, 2), (56, 5), (57, 12), (58, 12), (59, 5), (60, 9), (60, 12);
+(48, 10), (49, 6), (50, 4), (51, 1), (52, 10), (53, 4), (54, 4), (55, 1), (56, 2), (56, 5), (58, 12), (59, 5), (60, 9), (60, 12);
 
 -- ==================== USER_LIKES ====================
 INSERT INTO user_likes (utente, post) VALUES

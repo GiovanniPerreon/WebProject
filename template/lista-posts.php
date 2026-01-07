@@ -60,3 +60,67 @@
     </p>
 </article>
 <?php endforeach; ?>
+
+<?php if(isset($templateParams["totalPages"]) && $templateParams["totalPages"] > 1): ?>
+<nav class="pagination">
+    <?php 
+    $currentPage = $templateParams["currentPage"];
+    $totalPages = $templateParams["totalPages"];
+    $baseUrl = isset($templateParams["baseUrl"]) ? $templateParams["baseUrl"] : "index.php";
+    
+    // Previous button
+    if($currentPage > 1):
+    ?>
+    <a href="<?php echo $baseUrl; ?>?page=<?php echo $currentPage - 1; ?>" class="pagination-btn">&laquo; Precedente</a>
+    <?php else: ?>
+    <span class="pagination-btn disabled">&laquo; Precedente</span>
+    <?php endif; ?>
+    
+    <?php
+    // Page numbers
+    $range = 2; // Show 2 pages on each side
+    $start = max(1, $currentPage - $range);
+    $end = min($totalPages, $currentPage + $range);
+    
+    // First page
+    if($start > 1):
+    ?>
+    <a href="<?php echo $baseUrl; ?>?page=1" class="pagination-number">1</a>
+    <?php if($start > 2): ?>
+    <span class="pagination-ellipsis">...</span>
+    <?php endif; ?>
+    <?php endif; ?>
+    
+    <?php
+    // Middle pages
+    for($i = $start; $i <= $end; $i++):
+        if($i == $currentPage):
+    ?>
+    <span class="pagination-number active"><?php echo $i; ?></span>
+    <?php else: ?>
+    <a href="<?php echo $baseUrl; ?>?page=<?php echo $i; ?>" class="pagination-number"><?php echo $i; ?></a>
+    <?php 
+        endif;
+    endfor;
+    ?>
+    
+    <?php
+    // Last page
+    if($end < $totalPages):
+        if($end < $totalPages - 1):
+    ?>
+    <span class="pagination-ellipsis">...</span>
+    <?php endif; ?>
+    <a href="<?php echo $baseUrl; ?>?page=<?php echo $totalPages; ?>" class="pagination-number"><?php echo $totalPages; ?></a>
+    <?php endif; ?>
+    
+    <?php
+    // Next button
+    if($currentPage < $totalPages):
+    ?>
+    <a href="<?php echo $baseUrl; ?>?page=<?php echo $currentPage + 1; ?>" class="pagination-btn">Successivo &raquo;</a>
+    <?php else: ?>
+    <span class="pagination-btn disabled">Successivo &raquo;</span>
+    <?php endif; ?>
+</nav>
+<?php endif; ?>

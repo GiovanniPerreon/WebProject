@@ -19,7 +19,7 @@ class DatabaseHelper{
     }
 
     // Get latest posts (with anonymous support)
-    public function getPosts($n=-1){
+    public function getPosts($n=-1, $offset=0){
         $query = "SELECT p.idpost, p.titolopost, p.imgpost, p.anteprimapost, p.datapost, p.likes, p.anonimo, p.utente as idutente, p.pinned,
                   CASE WHEN p.anonimo = 1 THEN 'Anonimo' ELSE u.nome END as nome,
                   u.amministratore
@@ -27,15 +27,25 @@ class DatabaseHelper{
                   JOIN utente u ON p.utente = u.idutente
                   ORDER BY p.pinned DESC, p.datapost DESC";
         if($n > 0){
-            $query .= " LIMIT ?";
+            $query .= " LIMIT ? OFFSET ?";
         }
         $stmt = $this->db->prepare($query);
         if($n > 0){
-            $stmt->bind_param('i', $n);
+            $stmt->bind_param('ii', $n, $offset);
         }
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    // Count total posts
+    public function countTotalPosts(){
+        $query = "SELECT COUNT(*) as total FROM post";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['total'];
     }
 
     // Get a post by ID
